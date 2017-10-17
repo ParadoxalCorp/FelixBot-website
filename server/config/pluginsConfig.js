@@ -6,10 +6,10 @@ module.exports = [
 	{
 		register: require("blankie"),
 		options: {
-styleSrc: ['self', 'https://fonts.googleapis.com'],
-fontSrc: ['self', 'https://fonts.gstatic.com','data:'],
-objectSrc: 'self',
-generateNonces: true
+			styleSrc: ['self', 'https://fonts.googleapis.com'],
+			fontSrc: ['self', 'https://fonts.gstatic.com','data:', ''],
+			
+			generateNonces: true
 		}
 	},
 	{ register: require("vision") },
