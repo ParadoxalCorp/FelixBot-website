@@ -1,9 +1,7 @@
 module.exports = {
-  engines: { 
-    html: require('handlebars') 
-  },
+  engines: { html: require('handlebars') },
   compileOptions: {
-    pretty: true
+    pretty: false
   },
   path: process.cwd() + '/public/templates',
   partialsPath: process.cwd() + '/public/templates/partials',

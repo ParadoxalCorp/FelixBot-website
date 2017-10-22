@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# other stuff
+package-lock.json
+.vscode
+.sonarlint
+server/config/_configs.js

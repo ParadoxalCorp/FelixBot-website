@@ -99,6 +99,14 @@
   background-size: cover !important;
 }
 
-.get-down {
-  margin-top: 400px
+.get-down-350 {
+  margin-top: 350px
+}
+
+.get-down-450 {
+  margin-top: 450px
+}
+
+.get-down-550 {
+  margin-top: 550px
 }

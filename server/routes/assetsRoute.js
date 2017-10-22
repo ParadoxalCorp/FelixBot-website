@@ -7,7 +7,7 @@ module.exports = [
 		config: {
 			handler: {
 				directory: {
-					path: "./public/assets/imgs",
+					path: "./public/assets/images",
 					listing: false,
 					index: false,
 				},
@@ -50,8 +50,8 @@ module.exports = [
 			handler: {
 				directory: {
 					path: "./public/assets/favicon",
-					listing: true,
-					index: true,
+					listing: false,
+					index: false,
 				},
 			},
 			description: "favicon 	Assets",
@@ -64,8 +64,8 @@ module.exports = [
 			handler: {
 				directory: {
 					path: "./public/assets/semantic",
-					listing: true,
-					index: true,
+					listing: false,
+					index: false,
 				},
 			},
 			description: "semantic	Assets",

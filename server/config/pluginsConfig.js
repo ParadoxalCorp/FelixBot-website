@@ -3,13 +3,14 @@
 module.exports = [
 	{ register: require("inert") },
 	{ register: require("scooter") },
+	{ register: require('hapi-error') },
 	{
 		register: require("blankie"),
 		options: {
-			styleSrc: ['self', 'https://fonts.googleapis.com'],
-			fontSrc: ['self', 'https://fonts.gstatic.com','data:'],
+			styleSrc: ['self', 'https://fonts.googleapis.com', 'unsafe-inline'],
+			fontSrc: ['self', 'https://fonts.gstatic.com','data:', 'unsafe-inline'],
 			
-			generateNonces: true
+			generateNonces: false
 		}
 	},
 	{ register: require("vision") },
@@ -26,9 +27,11 @@ module.exports = [
 					{
 						module: "good-squeeze",
 						name: "Squeeze",
-						args: [{ ops: "*", log: "*", response: "*", error: "*", request: "*" }],
+						args: [{ format: 'YYYY-MM-DDTHH:mm:ss.SSS[]', log: "*", response: "*", error: "*", request: "*" }],
 					},
-					{ module: "good-console" },
+					{ module: "good-console",
+						args: [{ format: 'YYYY-MM-DDTHH:mm:ss.SSS[]' }]
+					},
 					"stdout",
 				],
 			},
