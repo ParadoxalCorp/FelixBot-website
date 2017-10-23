@@ -1,3 +1,3 @@
 # FelixBot-website
 
-there needs to be a empty folder in public/assets/templates/ called helpers
+the cofiguration file in `server/config/_config.example.js` needs to be configured and renamed to `_config.js`
