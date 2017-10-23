@@ -7,7 +7,10 @@ const configs = require("./server/config/hapi-prv")
 server.connection({
   port: 3000,
   host: configs._config.host,
-  labels: ["website"]
+  labels: ["website"],
+  router: {
+    stripTrailingSlash: true,
+  }
 })
 
 server.register(configs._plugins, () => {
