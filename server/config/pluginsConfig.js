@@ -4,6 +4,7 @@ module.exports = [
 	{ register: require("inert") },
 	{ register: require("scooter") },
 	{ register: require('hapi-error') },
+	{ register: require('bell') },
 	{
 		register: require("blankie"),
 		options: {

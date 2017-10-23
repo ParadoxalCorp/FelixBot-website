@@ -1,10 +1,14 @@
 "use strict";
-const plugins = require('./pluginsConfig')
-const routes = require("./routeConfig")
-const views = require("./viewsConfig")
+const _plugins = require('./pluginsConfig')
+const _routes = require("./routeConfig")
+const _views = require("./viewsConfig")
+const _config = require("./_configs")
+const _auth = require("./bellAuthConfig")
 
 module.exports = {
-  plugins : plugins,
-  routes : routes,
-  views : views
+  _plugins : _plugins,
+  _routes : _routes,
+  _views : _views,
+  _config : _config,
+  _auth : _auth
 }
