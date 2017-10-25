@@ -1,9 +1,16 @@
 module.exports = {
-  isSecure: false,
-  host: "localhost",
+  isSecure: false, // if there is https or not on the server
+  host: "dummy.com",
   auth: {
-    clientSecret: "",                                     // discord client secret
-    clientId: "",                                         // discord client id
-    authCookiePass: ""                                    // a chosen cookie password
+    failedLoginUrl : "/",
+    bellAuth : {
+      clientSecret: "WedSa7yfF7MkotfpNO8XH2uj2I_xfUSM",
+      clientId: "281149381829459968",
+      authCookiePass: "cookie_encryption_password_secure", // min 32 char long
+    },
+    cookieAuth : {
+      authCookiePass: "cookie_encryption_password_secure", // min 32 char long
+      cookieName: "discord" // sets the cookies name
+    },
   }
 }

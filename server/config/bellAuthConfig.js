@@ -2,9 +2,9 @@ const configs = require('./_configs')
 
 module.exports = {
   provider: 'discord',
-  password: configs.auth.authCookiePass,
-  isSecure: configs.isSecure,
+  password: configs.auth.bellAuth.authCookiePass,
+  isSecure: configs.isSecure || false,
   // Fill in your clientId and clientSecret: https://discordapp.com/developers/applications/me
-  clientId: configs.auth.clientId,
-  clientSecret: configs.auth.clientSecret
+  clientId: configs.auth.bellAuth.clientId,
+  clientSecret: configs.auth.bellAuth.clientSecret
 }

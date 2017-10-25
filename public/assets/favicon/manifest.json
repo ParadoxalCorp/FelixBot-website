@@ -1,5 +1,5 @@
 {
-    "name": "",
+    "name": "Felix-bot website",
     "icons": [
         {
             "src": "/imgs/favicon/android-chrome-192x192.png",
@@ -14,6 +14,6 @@
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "start_url": "http://felix-bot.xyz",
+    "start_url": "http://dummy.com",
     "display": "standalone"
 }
