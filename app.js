@@ -27,3 +27,4 @@ server.register(configs._plugins, () => {
 })
 
 
+// Use express, not hapi! 'hapi' succs <3
