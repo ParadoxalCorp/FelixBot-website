@@ -4,3 +4,4 @@ Disallow: /favicon/
 Disallow: /semantic/
 Disallow: /js/
 Disallow: /imgs/
+Disallow: /jQuery/

@@ -31,6 +31,20 @@ module.exports = [
 	},
 	{
 		method: "GET",
+		path: "/jQuery/{param*}",
+		config: {
+			handler: {
+				directory: {
+					path: "./node_modules/jquery/dist/",
+					listing: false,
+					index: false,
+				},
+			},
+			description: "jQuery		Assets",
+		},
+	},
+	{
+		method: "GET",
 		path: "/css/{param*}",
 		config: {
 			handler: {
