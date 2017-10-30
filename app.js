@@ -15,15 +15,10 @@ server.connection({
 server.register(configs._plugins, () => {
   server.log('info', 'Plugins registered')
 
-  server.app.cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
-
   server.auth.strategy('session', 'cookie', configs._CookieAuth)
   server.log('info', 'Registered auth strategy: cookie auth')
   server.auth.strategy('discord', 'bell', configs._BellAuth)
   server.log('info', 'Registered auth strategy: discord auth')
-
-  server.auth.default('session');
-
 
   server.views(configs._views);
   server.log('info', 'View configuration completed')
@@ -34,7 +29,7 @@ server.register(configs._plugins, () => {
   server.start((error) => {
     if (error) { 
       server.log('error', 'failed to start server')
-      throw err
+      throw error
     }
     server.log('info', ` The servers uri is    ${server.info.uri}`)
   })

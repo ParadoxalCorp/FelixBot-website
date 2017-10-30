@@ -2,30 +2,21 @@ module.exports = [
   {
     method: ['GET', 'POST'],
     path: '/dashboard',
-    config: {  // try with redirectTo disabled makes isAuthenticated usefully available
+    config: {
       auth: {
         strategy: 'session',
-        mode: 'try'
+        mode: 'required'
       },
-      //plugins: { 'hapi-auth-cookie': { redirectTo: false } }
     },
     handler: function (request, reply) {
-      // let context = {
-      //   session: {},
-      // };
+      const context = {
+        session: request.auth.credentials,
+      };
 
-      if (request.auth.isAuthenticated) {
-        console.log('test')
-        console.log(request.auth.credentials)
-      }
-      console.log( request.auth.credentials.profile.id )
-
-      // console.log(context)
-
-      //console.log(JSON.stringify(request.auth.credentials))
-
-
-      reply.view('dashboard')
+      reply.view('dashboard', {
+        title: 'Dashboard', 
+        context : context
+      });
     },
   }
 ];

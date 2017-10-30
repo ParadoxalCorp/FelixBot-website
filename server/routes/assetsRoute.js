@@ -70,5 +70,12 @@ module.exports = [
 			},
 			description: "semantic	Assets",
 		},
-	}
+	},
+	{
+		method: "GET",
+		path: "/robots.txt",
+		handler: function (request, reply) {
+			reply.file('./public/robots.txt');
+		},
+	},
 ];

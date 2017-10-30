@@ -3,12 +3,15 @@ module.exports = [
     method: 'GET',
     path: '/logout',
     config: {
-      handler: function (request, reply) {
-        // Clear the cookie
-        request.auth.session.clear();
-
-        return reply.redirect('/');
+      auth: {
+        mode: 'try',
+        strategy: 'session',
       }
+    },
+    handler: function (request, reply) {
+      // Clear the cookie
+      request.cookieAuth.clear();
+      return reply.redirect('/');
     }
   }
 ]

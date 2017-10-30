@@ -1,16 +1,17 @@
 module.exports = {
   isSecure: false, // if there is https or not on the server
-  host: "dummy.com",
+  host: "", // the websites address ("dummy.com" was used in testing)
   auth: {
-    failedLoginUrl : "/",
+    loginUrl: "", // the url where the POST and GET happen ("/discord" was used in tesing)
     bellAuth : {
-      clientSecret: "WedSa7yfF7MkotfpNO8XH2uj2I_xfUSM",
-      clientId: "281149381829459968",
-      authCookiePass: "cookie_encryption_password_secure", // min 32 char long
+      clientSecret: "", // client secret from the OAuth2 provider
+      clientId: "", // client id from the OAuth2 provider
+      authCookiePass: "" // min 32 char long
     },
     cookieAuth : {
-      authCookiePass: "cookie_encryption_password_secure", // min 32 char long
-      cookieName: "discord" // sets the cookies name
+      authCookiePass: "", // min 32 char long
+      cookieName: "", // sets the cookies name
+      isSameSite: "" // should be "Lax" to satisfy chromes security
     },
   }
 }
