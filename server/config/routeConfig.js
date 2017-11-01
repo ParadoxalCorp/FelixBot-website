@@ -1,6 +1,7 @@
 module.exports = [].concat(
   require( "../routes/indexRoute" ), 
   require( "../routes/assetsRoute" ),
-  require( "../routes/dashboardRoute" ),
-  require( "../routes/loginRoute" )
+  require( "../routes/loginRoute" ),
+  require( "../routes/logoutRoute" ),
+  require( "../routes/dashboardRoute" )
 )

@@ -1,14 +1,22 @@
 module.exports = [
   {
-    method: 'GET',
+    method: ['GET', 'POST'],
     path: '/dashboard',
     config: {
-      handler: function (request, reply) {
-        reply.view('index', {
-          title: 'This will become the dasboard page',
-          message: 'SoonTM'
-        })
+      auth: {
+        strategy: 'session',
+        mode: 'required'
       },
-    }
+    },
+    handler: function (request, reply) {
+      const context = {
+        session: request.auth.credentials,
+      };
+
+      reply.view('dashboard', {
+        title: 'Dashboard', 
+        context : context
+      });
+    },
   }
 ];

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	{{> index-header}}
+</head>
+
+<body>
+	{{> outer_navbar}}
+
+	<!-- Page Contents -->
+	<div class="pusher">
+		<div class="ui inverted masthead center aligned segment landing-image">
+			{{> inner_navbar}}
+		</div>
+
+		<p>Hello {{context.session.username}}</p>
+
+
+		{{> footer}}
+
+	</div>
+
+	<script src="/jQuery/jquery.min.js"></script>
+	<script src="/semantic/dist/semantic.min.js"></script>
+	<script src="/semantic/dist/components/popup.min.js"></script>
+	<script src="/js/sites/index.js"></script>
+
+</body>
+
+</html>
