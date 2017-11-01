@@ -1,4 +1,4 @@
-const configs = require("../config/_configs")
+const configs = require("../../config/_configs")
 
 module.exports = [
 	{

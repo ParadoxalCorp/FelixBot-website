@@ -16,6 +16,22 @@
 
 		<p>Hello {{context.session.username}}</p>
 
+		<button class="ui secondary basic button" id="get">I'm a "get" test button</button>
+
+
+		<br><br><br><br>
+
+		<form class="ui form">
+			<div class="field">
+				<label >write a number here</label>
+				<input type="text" id="take_my_value_to_push" placeholder="my message is gonna be psuhed to the server">
+			</div>
+			<button class="ui button" type="submit" id="push">push to server</button>
+			
+		</form>
+		
+		<h1 id="push_change">I'm going to be changed</h1>
+
 
 		{{> footer}}
 
@@ -25,6 +41,7 @@
 	<script src="/semantic/dist/semantic.min.js"></script>
 	<script src="/semantic/dist/components/popup.min.js"></script>
 	<script src="/js/sites/index.js"></script>
+	<script src="/js/sites/dashboard.js"></script>
 
 </body>
 
