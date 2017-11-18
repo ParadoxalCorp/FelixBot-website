@@ -2,11 +2,17 @@
 const Hapi = require("hapi")
 const server = new Hapi.Server()
 const configs = require("./server/config/_exported-configs")
+const fs = require('fs')
+
+const options = {  
+  key: fs.readFileSync('./server/ssl/felix-bot.key'),
+  cert:  fs.readFileSync('./server/ssl/felix-bot.crt')
+};
 
 server.connection({
-  port: 3000,
-  host: configs._config.host,
-  labels: ["website"],
+  tls: options,
+  port: configs._config.port,
+  host: configs._config.host, 
   router: {
     stripTrailingSlash: true,
   }
@@ -34,5 +40,3 @@ server.register(configs._plugins, () => {
     server.log('info', ` The servers uri is    ${server.info.uri}`)
   })
 })
-
-

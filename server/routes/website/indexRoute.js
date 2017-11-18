@@ -3,6 +3,7 @@ module.exports = [
     method: 'GET',
     path: '/',
     config: {
+      description: "Homepage",
       auth: {
         mode: 'try',
         strategy: 'session',

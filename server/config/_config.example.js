@@ -1,12 +1,14 @@
 module.exports = {
-  isSecure: false, // if there is https or not on the server
-  host: "", // the websites address ("dummy.com" was used in testing)
+  isSecure: true, // if there is https or not on the server
+  host: "", // the websites address 
+  port: 3000,
   auth: {
-    loginUrl: "", // the url where the POST and GET happen ("/discord" was used in tesing)
+    loginUrl: "/discord",
     bellAuth : {
-      clientSecret: "", // client secret from the OAuth2 provider
-      clientId: "", // client id from the OAuth2 provider
-      authCookiePass: "" // min 32 char long
+      clientSecret: "",
+      clientId: "",
+      authCookiePass: "", // min 32 char long
+      scope : ['email', 'guilds', 'connections', 'identify']
     },
     cookieAuth : {
       authCookiePass: "", // min 32 char long

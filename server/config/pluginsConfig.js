@@ -7,19 +7,21 @@ module.exports = [
 	{ register: require('hapi-error') },
 	{ register: require('bell') },
 	{ register: require('hapi-auth-cookie') },
+	{ register: require('hapi-response-time') },
+	{ register: require('therealyou') },
 	{
 		register: require("blankie"),
 		options: {
 			styleSrc: ['self', 'https://fonts.googleapis.com', 'unsafe-inline'],
 			fontSrc: ['self', 'https://fonts.gstatic.com', 'data:'],
-			scriptSrc : ['self', 'unsafe-inline'],
+			scriptSrc: ['self', 'unsafe-inline'],
 			generateNonces: false
 		}
 	},
 	{ register: require("vision") },
 	{
 		register: require("blipp"),
-		options: {},
+		options: { showAuth : true },
 	},
 	{
 		register: require("good"),

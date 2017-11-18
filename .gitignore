@@ -62,3 +62,4 @@ package-lock.json
 .vscode
 .sonarlint
 server/config/_configs.js
+server/ssl

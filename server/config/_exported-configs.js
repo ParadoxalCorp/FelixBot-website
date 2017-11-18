@@ -1,4 +1,5 @@
 "use strict";
+
 const _plugins = require('./pluginsConfig')
 const _routes = require("./routeConfig")
 const _views = require("./viewsConfig")

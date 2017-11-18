@@ -2,9 +2,10 @@ const configs = require("../../config/_configs")
 
 module.exports = [
 	{
-		method: ['GET', 'POST'],
+		method: ['GET'],
 		path: `${configs.auth.loginUrl}/{param*}`,
 		config: {
+			description: "Users gets logged in",
 			auth: {
 				mode: 'try',
 				strategy: 'discord',

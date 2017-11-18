@@ -1,8 +1,9 @@
 module.exports = [
   {
-    method: ['GET', 'POST'],
+    method: ['GET'],
     path: '/dashboard',
     config: {
+      description: "Dashboard for users",
       auth: {
         strategy: 'session',
         mode: 'required'

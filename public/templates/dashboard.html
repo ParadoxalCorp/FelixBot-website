@@ -2,7 +2,9 @@
 <html>
 
 <head>
-	{{> index-header}}
+	{{> standard-header-stuff}}
+	<title>{{title}}</title>
+	<link rel="stylesheet" href="/css/dashboard-css.css">
 </head>
 
 <body>
@@ -24,7 +26,7 @@
 		<form class="ui form">
 			<div class="field">
 				<label >write a number here</label>
-				<input type="text" id="take_my_value_to_push" placeholder="my message is gonna be psuhed to the server">
+				<input type="text" id="take_my_value_to_push" placeholder="my message is gonna be psuhed to the server" autocomplete="off">
 			</div>
 			<button class="ui button" type="submit" id="push">push to server</button>
 			

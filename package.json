@@ -19,11 +19,13 @@
     "hapi": "~16.6.2",
     "hapi-auth-cookie": "^7.0.0",
     "hapi-error": "~1.8.0",
+    "hapi-response-time": "^1.1.2",
     "inert": "~4.2.1",
     "joi": "^13.0.1",
-    "jquery": "~3.2.1",
+    "jquery" :"~3.2.1",
     "scooter": "~4.0.0",
     "semantic-ui": "~2.2.13",
+    "therealyou": "^1.1.0",
     "vision": "~4.1.1"
   },
   "devDependencies": {
