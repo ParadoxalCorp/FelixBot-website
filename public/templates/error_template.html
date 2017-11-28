@@ -2,14 +2,16 @@
 <html>
 
 <head>
-  {{> index-header}}
+  {{> standard-header-stuff}}
+	<title>{{title}}</title>
+	<link rel="stylesheet" href="/css/index-css.css">
 </head>
 
 <body>
   {{> outer_navbar}}
 
   <!-- Page Contents -->
-  <div class="pusher">
+  <div class="pusher ">
     <div class="ui inverted masthead center aligned segment landing-image">
 
       {{> inner_navbar}}

@@ -5,6 +5,7 @@ module.exports = [
 		method: "GET",
 		path: "/imgs/{param*}",
 		config: {
+			description: "imgs		Assets",
 			handler: {
 				directory: {
 					path: "./public/assets/images",
@@ -12,13 +13,13 @@ module.exports = [
 					index: false,
 				},
 			},
-			description: "imgs		Assets",
 		},
 	},
 	{
 		method: "GET",
 		path: "/js/{param*}",
 		config: {
+			description: "js		Assets",
 			handler: {
 				directory: {
 					path: "./public/assets/js",
@@ -26,13 +27,13 @@ module.exports = [
 					index: false,
 				},
 			},
-			description: "js		Assets",
 		},
 	},
 	{
 		method: "GET",
 		path: "/jQuery/{param*}",
 		config: {
+			description: "jQuery		Assets",
 			handler: {
 				directory: {
 					path: "./node_modules/jquery/dist/",
@@ -40,13 +41,13 @@ module.exports = [
 					index: false,
 				},
 			},
-			description: "jQuery		Assets",
 		},
 	},
 	{
 		method: "GET",
 		path: "/css/{param*}",
 		config: {
+			description: "css		Assets",
 			handler: {
 				directory: {
 					path: "./public/assets/css",
@@ -54,13 +55,13 @@ module.exports = [
 					index: false,
 				},
 			},
-			description: "css		Assets",
 		},
 	},
 	{
 		method: "GET",
 		path: "/favicon/{param*}",
 		config: {
+			description: "favicon 	Assets",
 			handler: {
 				directory: {
 					path: "./public/assets/favicon",
@@ -68,13 +69,13 @@ module.exports = [
 					index: false,
 				},
 			},
-			description: "favicon 	Assets",
 		},
 	},
 	{
 		method: "GET",
 		path: "/semantic/{param*}",
 		config: {
+			description: "semantic	Assets",
 			handler: {
 				directory: {
 					path: "./public/assets/semantic",
@@ -82,7 +83,6 @@ module.exports = [
 					index: false,
 				},
 			},
-			description: "semantic	Assets",
 		},
 	},
 	{

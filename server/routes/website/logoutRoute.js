@@ -3,6 +3,7 @@ module.exports = [
     method: 'GET',
     path: '/logout',
     config: {
+      description: "user logs out",
       auth: {
         mode: 'try',
         strategy: 'session',
@@ -14,4 +15,4 @@ module.exports = [
       return reply.redirect('/');
     }
   }
-]
+];

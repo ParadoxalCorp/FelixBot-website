@@ -3,6 +3,7 @@ module.exports = [
     method: 'GET',
     path: '/',
     config: {
+      description: "Homepage",
       auth: {
         mode: 'try',
         strategy: 'session',
@@ -21,7 +22,7 @@ module.exports = [
         title: 'Homepage',
         message: 'Hello World',
         context : context
-      })
+      });
     }
   }
 ];

@@ -1,8 +1,9 @@
 module.exports = [
   {
-    method: ['GET', 'POST'],
+    method: ['GET'],
     path: '/dashboard',
     config: {
+      description: "Dashboard for users",
       auth: {
         strategy: 'session',
         mode: 'required'
@@ -12,6 +13,8 @@ module.exports = [
       const context = {
         session: request.auth.credentials,
       };
+
+      console.log( context );
 
       reply.view('dashboard', {
         title: 'Dashboard', 
