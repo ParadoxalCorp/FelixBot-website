@@ -5,7 +5,9 @@
     "name": "Niputi"
   },
   "scripts": {
-    "run": "nodemon app.js"
+    "run": "nodemon app.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "license": "MIT",
   "dependencies": {
@@ -32,11 +34,13 @@
     "underscore": "^1.8.3",
     "unirest": "^0.5.1",
     "vision": "~4.1.1",
-    "wreck": "^12.5.1"
+    "wreck": "^12.5.1",
+    "snyk": "^1.52.0"
   },
   "devDependencies": {
     "eslint": "^4.12.0",
     "gulp": "^3.9.1",
     "nodemon": "^1.12.1"
-  }
+  },
+  "snyk": true
 }
