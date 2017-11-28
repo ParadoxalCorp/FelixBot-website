@@ -4,9 +4,9 @@
 module.exports = [
 	{ register: require("inert") },
 	{ register: require("scooter") },
-	{ register: require('hapi-error') },
 	{ register: require('bell') },
 	{ register: require('hapi-auth-cookie') },
+	{ register: require('hapi-error')},
 	{ register: require('hapi-response-time') },
 	{ register: require('therealyou') },
 	{

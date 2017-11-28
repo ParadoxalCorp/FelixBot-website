@@ -1,30 +1,37 @@
 const Joi = require('joi');
+const Boom = require('boom');
 
 module.exports = [
-  {
-    method: 'POST',
-    path: '/api/test',
-    config: {
-      auth: {
-        strategy: 'session',
-        mode: 'required'
-      },
-    },
-    handler: function (request, reply) {
-      const payload = request.payload
-      //console.log(payload.number)
-      console.log(payload)
-
-      const schema = {
-        number: Joi.number()
-      };
-
-      const result = Joi.validate({ number: payload.number }, schema);
-
-      const returnedMath = (!(result.error === null)  ) ? "the input is not a number" : payload.number * 3.14
-
-
-      return reply(returnedMath);
-    }
-  }
+	{
+		method: 'POST',
+		path: '/api/test',
+		config: {
+			auth: {
+				strategy: 'session',
+				mode: 'required'
+			},
+			validate: {
+				payload: {
+					number: Joi.number().required()
+				},
+				failAction: function (request, reply, source, error) {
+					if (error) {
+						reply(Boom.badRequest('invalid query'));
+					}
+					
+				}
+			}
+		},
+		handler: function (request, reply) {
+			
+			const data = {
+				number: request.payload.number * 3.14
+			};
+			
+			console.log(this.configs.port);
+			
+			
+			return reply(data);
+		}
+	}
 ];

@@ -1,4 +1,4 @@
-const configs = require('./_configs')
+const configs = require('../../config/_configs');
 
 module.exports = {
   cookie: configs.auth.cookieAuth.cookieName || "login_cookie",
@@ -8,4 +8,4 @@ module.exports = {
   redirectTo: configs.auth.loginUrl,
   redirectOnTry: false,
   appendNext: 'redirect'
-}
+};

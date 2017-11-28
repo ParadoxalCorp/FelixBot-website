@@ -1,4 +1,8 @@
 module.exports = {
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "strict",
+    },
     "env": {
         "browser": true,
         "commonjs": true,
@@ -231,7 +235,7 @@ module.exports = {
         "require-await": "error",
         "require-jsdoc": "off",
         "rest-spread-spacing": "error",
-        "semi": "off",
+        "semi": "error",
         "semi-spacing": "off",
         "semi-style": "off",
         "sort-imports": "error",

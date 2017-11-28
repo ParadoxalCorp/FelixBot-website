@@ -22,7 +22,7 @@ module.exports = [
         title: 'Homepage',
         message: 'Hello World',
         context : context
-      })
+      });
     }
   }
 ];

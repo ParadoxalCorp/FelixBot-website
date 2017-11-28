@@ -63,3 +63,4 @@ package-lock.json
 .sonarlint
 server/config/_configs.js
 server/ssl
+.idea

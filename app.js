@@ -1,42 +1,53 @@
-"use strict"
-const Hapi = require("hapi")
-const server = new Hapi.Server()
-const configs = require("./server/config/_exported-configs")
-const fs = require('fs')
+"use strict";
+const Hapi = require("hapi");
+const server = new Hapi.Server();
+const { _BellAuth, _CookieAuth, _plugins, _routes, _views } = require("./server/config/_exports");
+const { bot_api, port, host, isSecure, auth } = require("./config/_configs");
+const fs = require('fs');
+const boom = require("boom");
 
-const options = {  
+const options = {
   key: fs.readFileSync('./server/ssl/felix-bot.key'),
-  cert:  fs.readFileSync('./server/ssl/felix-bot.crt')
+  cert: fs.readFileSync('./server/ssl/felix-bot.crt')
 };
+
+server.bind({
+  boom,
+  config: {
+    bot_api: bot_api,
+    isSecure: isSecure,
+		auth : auth
+  }
+});
 
 server.connection({
   tls: options,
-  port: configs._config.port,
-  host: configs._config.host, 
+  port: port,
+  host: host,
   router: {
     stripTrailingSlash: true,
   }
-})
+});
 
-server.register(configs._plugins, () => {
-  server.log('info', 'Plugins registered')
+server.register(_plugins, function () {
+  server.log('info', 'Plugins registered');
 
-  server.auth.strategy('session', 'cookie', configs._CookieAuth)
-  server.log('info', 'Registered auth strategy: cookie auth')
-  server.auth.strategy('discord', 'bell', configs._BellAuth)
-  server.log('info', 'Registered auth strategy: discord auth')
+  server.auth.strategy('session', 'cookie', _CookieAuth);
+  server.log('info', 'Registered auth strategy: cookie auth');
+  server.auth.strategy('discord', 'bell', _BellAuth);
+  server.log('info', 'Registered auth strategy: discord auth');
 
-  server.views(configs._views);
-  server.log('info', 'View configuration completed')
+  server.views(_views);
+  server.log('info', 'View configuration completed');
 
-  server.route(configs._routes);
-  server.log('info', 'Routes registered')
+  server.route(_routes);
+  server.log('info', 'Routes registered');
 
   server.start((error) => {
-    if (error) { 
-      server.log('error', 'failed to start server')
-      throw error
+    if (error) {
+      server.log('error', 'failed to start server');
+      throw error;
     }
-    server.log('info', ` The servers uri is    ${server.info.uri}`)
-  })
-})
+    server.log('info', ` The servers uri is    ${server.info.uri}`);
+  });
+});

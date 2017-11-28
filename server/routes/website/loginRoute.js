@@ -1,4 +1,4 @@
-const configs = require("../../config/_configs")
+const configs = require("../../../config/_configs");
 
 module.exports = [
 	{
@@ -15,8 +15,14 @@ module.exports = [
 					return reply.redirect('/');
 				}
 
-				const username = request.auth.credentials.profile.username
-				request.cookieAuth.set({ username });
+				const profile = request.auth.credentials.profile;
+				request.cookieAuth.set({
+					username: profile.username,
+					user_id: profile.id,
+					image_id: profile.avatar.id,
+					email: profile.email,
+					image_link : profile.avatar.url
+				});
 				reply.redirect('/dashboard');
 			}
 		}

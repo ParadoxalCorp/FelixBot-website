@@ -15,6 +15,6 @@ $("form").submit(function(e) {
 	e.preventDefault();
 	var txt = $("#take_my_value_to_push").val();
 	$.post("/api/test", { number: txt }, function (result) {
-		$("#push_change").html(result);
+		$("#push_change").html(result.number);
 	});
 });

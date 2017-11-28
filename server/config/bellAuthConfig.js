@@ -1,4 +1,4 @@
-const configs = require('./_configs')
+const configs = require('../../config/_configs');
 
 module.exports = {
   provider: 'discord',
@@ -9,4 +9,4 @@ module.exports = {
   clientSecret: configs.auth.bellAuth.clientSecret,
   scope : configs.auth.bellAuth.scope || ['email', 'guilds', 'connections', 'identify'],
   forceHttps : configs.isSecure
-}
+};

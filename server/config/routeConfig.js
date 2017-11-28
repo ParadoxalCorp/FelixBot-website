@@ -4,12 +4,13 @@ const website = [].concat(
   require("../routes/website/loginRoute"),
   require("../routes/website/logoutRoute"),
   require("../routes/website/dashboardRoute")
-)
+);
 
 const api = [].concat(
   require("../routes/api/postTestRoute"),
-  require("../routes/api/getTestRoute")
-)
+  require("../routes/api/getTestRoute"),
+  require("../routes/api/UserData")
+);
 
-module.exports = [].concat(website, api)
+module.exports = [...api,...website];
 
