@@ -3,13 +3,8 @@
 }
 
 .masthead.segment {
-  min-height: 700px;
+  min-height: 300px;
   padding: 1em 0em;
-}
-
-.masthead .logo.item img {
-  background-image: "https://yt3.ggpht.com/-QjsHpbNN9lU/AAAAAAAAAAI/AAAAAAAAAAA/laFCWyL_us0/s88-c-k-no-mo-rj-c0xffffff/photo.jpg";
-  margin-right: 1em;
 }
 
 .masthead .ui.menu .ui.button {
@@ -97,16 +92,4 @@
 .landing-image {
   background-image: url('/imgs/felix-bg.jpg') !important;
   background-size: cover !important;
-}
-
-.get-down-350 {
-  margin-top: 350px
-}
-
-.get-down-450 {
-  margin-top: 450px
-}
-
-.get-down-550 {
-  margin-top: 550px
 }

@@ -8,23 +8,36 @@ module.exports = [
 		method: 'GET',
 		path: '/api/mutualGuilds',
 		config: {
+			auth: {
+				strategy: 'session',
+				mode: 'required'
+			},
 			validate: {
 				query: {
-					userID: Joi.number().min(100000000000000000).max(999999999999999999).required().raw(),
+					userID: Joi.number().min(100000000000000000).max(999999999999999999).optional().raw(),
 					Guilds: Joi.boolean().optional(),
-					gSets : Joi.boolean().optional(),
-					CDs : Joi.boolean().optional(),
-					pSets : Joi.boolean().optional(),
-					uInfo : Joi.boolean().optional()
+					gSets: Joi.boolean().optional(),
+					CDs: Joi.boolean().optional(),
+					pSets: Joi.boolean().optional(),
+					uInfo: Joi.boolean().optional()
 				},
 				failAction: function (request, reply, source, error) {
 					if (error) {
 						reply(Boom.badRequest('invalid query'));
 					}
-				}
+				},
 			},
 			handler: function (request, reply) {
-				const user = request.query.userID;
+				let user = "";
+				console.log(request.state.discord.user_id);
+				if (!(request.query.userID)) {
+					user = request.state.discord.user_id;
+				} else {
+					user = request.query.userID;
+				}
+
+				console.log(user);
+
 				const bGuilds = request.query.Guilds;
 				const gSets = request.query.gSets;
 				const CDs = request.query.CDs;

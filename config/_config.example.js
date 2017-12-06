@@ -3,7 +3,6 @@ module.exports = {
 	host: "", // the websites address 
 	port: 3000,
 	auth: {
-		loginUrl: "/discord",
 		bellAuth: {
 			clientSecret: "",
 			clientId: "",

@@ -5,7 +5,7 @@ module.exports = {
   password: configs.auth.cookieAuth.authCookiePass,
   isSecure: configs.isSecure || false,
   isSameSite: configs.auth.cookieAuth.isSameSite || "Lax",
-  redirectTo: configs.auth.loginUrl,
+  redirectTo: "/discord",
   redirectOnTry: false,
   appendNext: 'redirect'
 };

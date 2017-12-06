@@ -6,10 +6,6 @@ module.exports = [
 		method: 'POST',
 		path: '/api/test',
 		config: {
-			auth: {
-				strategy: 'session',
-				mode: 'required'
-			},
 			validate: {
 				payload: {
 					number: Joi.number().required()
@@ -18,19 +14,13 @@ module.exports = [
 					if (error) {
 						reply(Boom.badRequest('invalid query'));
 					}
-					
 				}
 			}
 		},
 		handler: function (request, reply) {
-			
 			const data = {
-				number: request.payload.number * 3.14
+				number: request.payload.number * Math.PI
 			};
-			
-			console.log(this.configs.port);
-			
-			
 			return reply(data);
 		}
 	}

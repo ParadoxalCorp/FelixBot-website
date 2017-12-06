@@ -1,11 +1,19 @@
 <!-- Following Menu -->
-<div class="ui large top fixed hidden menu">
+<div class="ui large top fixed hidden menu inverted">
 	<div class="ui container">
 		<a class="active item" href="/">Home</a>
-		<a class="item">About</a>
 		<div class="right menu">
-			<div class="item">
+			{{#if context.session.username}}
+		<div class="item">
+			<a class="ui button" href="/dashboard">Dashboard</a>
+		</div>
+			{{/if}}
+		<div class="item">	
+				{{#if context.session.username}}
+				<a class="ui button" href="/logout">Log out</a>
+				{{else}}
 				<a class="ui button" href="/discord">Log in</a>
+				{{/if}}
 			</div>
 		</div>
 	</div>
@@ -14,6 +22,12 @@
 <!-- Sidebar Menu -->
 <div class="ui vertical inverted sidebar menu">
 	<a class="active item" href="/">Home</a>
-	<a class="item">About</a>
-	<a class="item" href="/discord">Login</a>
+	{{#if context.session.username}}
+	<a class="item" href="/dashbaord">Dashboard</a>
+	{{/if}}
+	{{#if context.session.username}}
+	<a class="item" href="/logout">Log out</a>
+	{{else}}
+	<a class="item" href="/discord">Log in</a>
+	{{/if}}
 </div>

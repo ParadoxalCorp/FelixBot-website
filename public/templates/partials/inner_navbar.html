@@ -4,8 +4,10 @@
 			<i class="sidebar icon"></i>
 		</a>
 		<a class="active item" href="/">Home</a>
-		<a class="item">About</a>
 		<div class="right item">
+			{{#if context.session.username}}
+			<a class="ui inverted button" href="/dashboard">Dashboard</a>
+			{{/if}}
 			{{#if context.session.username}}
 			<a class="ui inverted button" href="/logout">Log out</a>
 			{{else}}

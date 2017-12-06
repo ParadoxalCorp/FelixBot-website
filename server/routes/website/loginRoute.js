@@ -1,9 +1,7 @@
-const configs = require("../../../config/_configs");
-
 module.exports = [
 	{
 		method: ['GET'],
-		path: `${configs.auth.loginUrl}/{param*}`,
+		path: `/discord/{param*}`,
 		config: {
 			description: "Users gets logged in",
 			auth: {
@@ -20,7 +18,6 @@ module.exports = [
 					username: profile.username,
 					user_id: profile.id,
 					image_id: profile.avatar.id,
-					email: profile.email,
 					image_link : profile.avatar.url
 				});
 				reply.redirect('/dashboard');

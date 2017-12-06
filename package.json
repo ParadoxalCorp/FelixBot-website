@@ -7,7 +7,7 @@
   "scripts": {
     "run": "nodemon app.js",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect"
   },
   "license": "MIT",
   "dependencies": {

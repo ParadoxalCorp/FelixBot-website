@@ -19,7 +19,7 @@ module.exports = [
       }
 
       reply.view('index', {
-        title: 'Homepage',
+				title: 'Homepage',
         message: 'Hello World',
         context : context
       });
