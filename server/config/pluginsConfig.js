@@ -15,6 +15,7 @@ module.exports = [
 			styleSrc: ['self', 'https://fonts.googleapis.com', 'unsafe-inline'],
 			fontSrc: ['self', 'https://fonts.gstatic.com', 'data:'],
 			scriptSrc: ['self', 'unsafe-inline'],
+			imgSrc : ['self', 'https://cdn.discordapp.com', 'https://semantic-ui.com', 'https://discordapp.com'],
 			generateNonces: false
 		}
 	},

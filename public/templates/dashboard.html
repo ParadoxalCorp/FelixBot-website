@@ -16,66 +16,173 @@
 			{{> inner_navbar}}
 		</div>
 
-		<p>Hello {{context.session.username}}</p>
-
-		<button class="ui secondary basic button" id="get">I'm a "get" test button</button>
-
-
-		<br>
-		<br>
-		<br>
-		<br>
-		<form class="ui form">
-			<div class="field">
-				<label>write a number here</label>
-				<input type="text" id="take_my_value_to_push" placeholder="my message is gonna be psuhed to the server" autocomplete="off">
-			</div>
-			<button class="ui button" type="submit" id="push">push to server</button>
-
-		</form>
-
-		<h1 id="push_change">I'm going to be changed</h1>
-
-		<br>
-		<br>
-		<br>
-		<br>
-		<div class="ui cards">
-			<div class="card">
-				<div class="content">
-					<div class="header">
-						<img class="ui avatar image" src="/imgs/avatar.jpg">Elliot Fu</div>
-					<div class="meta">Friend</div>
-					<div class="description">
-						Elliot Fu is a film-maker from New York.
-					</div>
-				</div>
-			</div>
-		</div>
-
-
 		<div class="ui vertical stripe segment">
-			<div class="ui text container">
+			<div class="ui container">
+				<h3 class="ui header">User settings</h3>
 
-				<div class="ui two column grid">
+				<div class="ui one column grid">
 					<div class="column">
 
-						<div class="ui fluid selection dropdown">
-							<input type="hidden" name="user">
-							<i class="dropdown icon"></i>
-							<div class="default text">Select Server</div>
-							<div class="menu" id="menuDropdown">
+						<div class="ui fluid cards">
+							<div class="card" id="userContent">
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+
+
+				<!-- 
+
+				<div class="ui card">
+					<div class="content">
+						<div class="header">Cute Dog</div>
+						<div class="meta">2 days ago</div>
+						<div class="description">
+							<p>Cute dogs come in a variety of shapes and sizes. Some cute dogs are cute for their adorable faces, others for their tiny stature, and even others for their massive size.</p>
+							<p>Many people also have their own barometers for what makes a cute dog.</p>
+						</div>
+					</div>
+					<div class="extra content">
+						<i class="heartbeat icon"></i>
+						121 Love points
+					</div>
+				</div>
+
+ -->
+
+
+
+				<div class="ui three column grid">
+					<div class="">
+						<div class="column center aligned">
+							<div class="ui fluid card">
+								<div class="content">
+									<div class="header">
+										<img class="ui avatar image" src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png">Karen_Kujou#3386
+									</div>
+									<div class="meta">2 days ago</div>
+									<div class="description">
+										<p>Cute dogs come in a variety of shapes and sizes. Some cute dogs are cute for their adorable faces, others for their
+											tiny stature, and even others for their massive size.</p>
+										<p>Many people also have their own barometers for what makes a cute dog.</p>
+									</div>
+								</div>
+								<div class="extra content">
+									<i class="heart icon"></i>
+									121 Love Points
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- <div class="column">
+						<div class="ui fluid card">
+							<div class="content">
+								<div class="header">
+									<img class="ui avatar image" src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png">Karen_Kujou#3386
+								</div>
+								<div class="meta">2 days ago</div>
+								<div class="description">
+									<p>Cute dogs come in a variety of shapes and sizes. Some cute dogs are cute for their adorable faces, others for their
+										tiny stature, and even others for their massive size.</p>
+									<p>Many people also have their own barometers for what makes a cute dog.</p>
+								</div>
+							</div>
+							<div class="extra content">
+								<i class="heart icon"></i>
+								121 Love Points
+							</div>
+						</div>
+					</div>
+					<div class="column">
+						<div class="ui fluid card">
+							<div class="content">
+								<div class="header">
+									<img class="ui avatar image" src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png">Karen_Kujou#3386
+								</div>
+								<div class="meta">2 days ago</div>
+								<div class="description">
+									<p>Cute dogs come in a variety of shapes and sizes. Some cute dogs are cute for their adorable faces, others for their
+										tiny stature, and even others for their massive size.</p>
+									<p>Many people also have their own barometers for what makes a cute dog.</p>
+								</div>
+							</div>
+							<div class="extra content">
+								<i class="heart icon"></i>
+								121 Love Points
+							</div>
+						</div>
+					</div>
+				</div> -->
+
+
+
+
+
+				</div>
+			</div>
+
+			<div class="ui vertical stripe">
+				<div class="ui container">
+					<h3 class="ui header">Server settings</h3>
+
+					<div class="ui three column grid">
+						<div class="column">
+
+							<div class="ui search selection dropdown fluid">
+								<input type="hidden" name="country">
+								<i class="dropdown icon"></i>
+								<div class="default text">Select server</div>
+								<div class="menu" id="menu">
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- grid exmaple -->
+			<div class="ui vertical stripe">
+				<div class="ui container">
+
+					<div class="ui aligned grid">
+						<div class="floated centered aligned six wide column">
+							<div class="ui segment">
+								Right floated left aligned column
+							</div>
+						</div>
+						<div class="center aligned two column row">
+							<div class="column">
+								<div class="ui segment">
+									Center aligned row
+								</div>
+							</div>
+							<div class="column">
+								<div class="ui segment">
+									Center aligned row
+								</div>
+							</div>
+						</div>
+						<div class="sixteen wide column">
+							<div class="ui segment">
+								Right Aligned Grid
 							</div>
 						</div>
 					</div>
 
 				</div>
 			</div>
+			<!-- grid exmaple end -->
 
 		</div>
-	</div>
 
-	{{> footer}}
+		{{> footer}}
 
 	</div>
 	<script src="/jQuery/jquery.min.js"></script>
@@ -85,37 +192,94 @@
 	<script src="/js/sites/dashboard.js"></script>
 
 	<script>
-		let data = ""
+		$('.ui.dropdown').dropdown();
+		var data = ""
+		var guild = {
+			id: [],
+			icon: [],
+			name: []
+		}
+		var user = {
+			icon: ""
+		}
 		$(document).ready(function () {
 			$.get("/api/mutualGuilds", function (json, status) {
 				data = json
+
+				let _map = new Map(Object.entries(data.mutualGuilds))
+
+				if (data.userinfo.user.avatar == null) {
+					user.icon = "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
+					console.log(user.icon)
+					console.log()
+				} else {
+					user.icon = `https://cdn.discordapp.com/avatars/${data.id}/${data.userinfo.user.avatar}.png`
+					console.log(user.icon)
+				}
+
+				for (let num = 0; num < _map.size; num++) {
+					console.log(_map.get(num.toString()).id)
+					guild.id.push(_map.get(num.toString()).id)
+					guild.name.push(_map.get(num.toString()).name)
+					if (_map.get(num.toString()).icon == null) {
+						guild.icon.push("https://semantic-ui.com/images/wireframe/square-image.png")
+					} else {
+						guild.icon.push(`https://cdn.discordapp.com/icons/${guild.id[num]}/${_map.get(num.toString()).icon}.png`)
+					}
+				}
+
+				setTimeout(function () {
+					$('#userContent').append(`
+							<div class="content">
+									<div class="header">
+										<img class="ui avatar image" src=${user.icon}>${data.userinfo.user.username}#${data.userinfo.user.discriminator}
+									</div>
+									<div class="meta">Friend</div>
+									<div class="description">
+										Elliot Fu is a film-maker from New York.
+									</div>
+								</div>
+								<div class="extra content">
+									<i class="heart icon"></i>
+									${data.generalSettings.lovePoints} Love points
+								</div>
+							`)
+				}, 0)
+
+
+				setTimeout(function () {
+					$('#userContent2').append(`
+							<div class="content">
+									<div class="header">
+										<img class="ui avatar image" src=${user.icon}>${data.userinfo.user.username}#${data.userinfo.user.discriminator}
+									</div>
+									<div class="meta">Friend</div>
+									<div class="description">
+										Elliot Fu is a film-maker from New York.
+									</div>
+								</div>
+								<div class="extra content">
+									<i class="heart icon"></i>
+									${data.generalSettings.lovePoints} Love points
+								</div>
+							`)
+				}, 0)
+
+				setTimeout(function () {
+					for (let index = 0; index < _map.size; index++) {
+						$('#menu').append(`
+								<div class="item" data-value=${guild.id[index]}>
+									<img class="ui circular image flag" src=${guild.icon[index]}>
+									${guild.name[index]}
+								</div>
+							`)
+					}
+					$('#menu').dropdown('refresh');
+				}, 0)
+
+
 			});
 		});
-
-
-		$('.ui.dropdown').dropdown();
-		var items = [{ text: 'One', image: '/imgs/avatar.jpg' }, { text: 'Two', image: '/imgs/felix-bg.jpg' }]
-
-		// Object.size = function (obj) {
-		// 	var size = 0, key;
-		// 	for (key in obj) {
-		// 		if (obj.hasOwnProperty(key)) size++;
-		// 	}
-		// 	return size;
-		// };
-		// // Get the size of an object
-		// var size = Object.size(obj);
-		setTimeout(function () {
-			for (let index = 0; index < items.length; index++) {
-				$('#menuDropdown').append(`
-						<div class="item" data-value=${items[index].text}>
-							<img class="ui circular image" src=${items[index].image}>
-								${items[index].text}
-						</div>
-						`)
-			}
-			$('#menuDropdown').dropdown('refresh');
-		}, 1000)
 	</script>
 
 </body>

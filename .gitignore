@@ -64,4 +64,4 @@ package-lock.json
 server/config/_configs.js
 server/ssl
 .idea
-config/_config.js
+config/_configs.js

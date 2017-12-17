@@ -29,14 +29,11 @@ module.exports = [
 			},
 			handler: function (request, reply) {
 				let user = "";
-				console.log(request.state.discord.user_id);
 				if (!(request.query.userID)) {
 					user = request.state.discord.user_id;
 				} else {
 					user = request.query.userID;
 				}
-
-				console.log(user);
 
 				const bGuilds = request.query.Guilds;
 				const gSets = request.query.gSets;

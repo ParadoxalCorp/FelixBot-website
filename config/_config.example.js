@@ -16,7 +16,7 @@ module.exports = {
 		},
 	},
 	bot_api: {
-		base_url: "",
+		base_url: "", // don't make it start with /
 		token: ""
 	}
 };
