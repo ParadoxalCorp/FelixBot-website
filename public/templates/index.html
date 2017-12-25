@@ -2,68 +2,116 @@
 <html>
 
 <head>
-	{{> standard-header-stuff}}
-	<title>{{title}}</title>
-	<link rel="stylesheet" href="/css/index-css.css">
+    {{> standard-header-stuff}}
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/index-css.css">
 </head>
 
 <body>
-	{{> outer_navbar}}
+    {{> outer_navbar}}
 
-	<!-- Page Contents -->
-	<div class="pusher">
-		<div class="ui inverted masthead center aligned segment landing-image">
+    <!-- Page Contents -->
+    <div class="pusher">
+        <div class="ui inverted masthead center aligned segment landing-image">
 
-			{{> inner_navbar}}
+            {{> inner_navbar}}
 
-			<div class="ui text container get-down-550">
-				<div class="ui small button inverted">
-					<a href="https://discordapp.com/oauth2/authorize?&client_id=327144735359762432&scope=bot&permissions=2146950271">invite link
-						<i class="right arrow icon"></i>
-					</a>
-				</div>
-			</div>
-		</div>
+            <div class="ui text container get-down-550">
+                <div class="ui small button inverted" onmouseover="document.getElementById('inviteButton').style.color = 'black'" onmouseout="document.getElementById('inviteButton').style.color = 'white'">
+                    <a id="inviteButton" href="https://discordapp.com/oauth2/authorize?&client_id=327144735359762432&scope=bot&permissions=2146950271" style="color: #fff"></a>
+                    invite link
+                    <i class="right arrow icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-		<div class="ui vertical stripe segment">
-			<div class="ui middle aligned stackable grid container">
-				<div class="row">
-					<div class="eight wide column">
-						<h3 class="ui header">{{title}}</h3>
-						<p>{{message}}</p>
-						<h3 class="ui header">We Make Bananas That Can Dance</h3>
-						<p>Yes that's right, you thought it was the stuff of dreams, but even bananas can be bioengineered.</p>
-					</div>
-					<div class="six wide right floated column">
-						<img src="/imgs/avatar.jpg" class="ui large bordered rounded image">
-					</div>
-				</div>
-				<div class="row">
-					<div class="center aligned column">
-						<a class="ui huge button">Check Them Out</a>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column">
+                        <h3 class="ui header">Keep only what matters to you</h3>
+                        <p>While multipurposes bots have a great chance to fit your needs, they also have a great chance to have features you don't need nor want. Felix was designed with that in mind and lets you disable commands/entire categories with the
+                            <strong>disable</strong> command, effectively making Felix ignore users who tries to use the disabled commands and hide them from the help command so your members know what they can use and what they can't.
+                        </p>
+                    </div>
+                    <div class="six wide right floated column">
+                        <img src="https://cdn.discordapp.com/attachments/356224772184735756/394436336859348992/plugin.png" class="ui small rounded image">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="ui vertical stripe segment">
-			<div class="ui text container">
-				<h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
-				<p>Instead of focusing on content creation and hard work, we have learned how to master the art of doing nothing by providing
-					massive amounts of whitespace and generic content that can seem massive, monolithic and worth your attention.</p>
-				<a class="ui large button">Read More</a>
-			</div>
-		</div>
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="six wide left floated column">
+                        <img src="https://cdn.discordapp.com/attachments/356224772184735756/394514579725746177/star_1.png" class="ui small rounded image">
+                    </div>
+                    <div class="eight wide column">
+                        <h3 class="ui header">Pin your best memes</h3>
+                        <p>Felix comes packed with a starboard feature, set it up with the <strong>starboard</strong> command, react with a star to the best messages out there and Felix will keep them in the starboard channel !
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column">
+                        <h3 class="ui header">Power-up your server</h3>
+                        <p>Felix also brings along a bunch of features to make your server management easier: greetings, farewell, self-assignable roles, roles to automatically add to new members...
+                        </p>
+                    </div>
+                    <div class="six wide right floated column">
+                        <img src="https://cdn.discordapp.com/attachments/356224772184735756/394520199270760448/gear.png" class="ui small rounded image">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	{{> footer}}
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="six wide left floated column">
+                        <img src="https://cdn.discordapp.com/attachments/356224772184735756/394522024837644288/hammer_pick.png" class="ui small rounded image">
+                    </div>
+                    <div class="eight wide column">
+                        <h3 class="ui header">Keep the bad guys out</h3>
+                        <p>What kind of fool comes with server management features and not moderation ones? Not Felix ! You can set a mod-log channel to log (or not), ban, mute, softban, kick... All that with audit-log integration meaning Felix can also
+                            grab the actions and log it even if you don't use the commands
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	</div>
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column">
+                        <h3 class="ui header">Throw your weebeeness at your friends</h3>
+                        <p>Felix not only comes with <strong>anime</strong> and <strong>manga</strong> commands to search up for mangas/animes, but also with the awesome <a href='https://weeb.sh' target="_blank">weeb.sh</a> image api to give you the best
+                            weeb images out there
+                        </p>
+                    </div>
+                    <div class="six wide right floated column">
+                        <img src="https://cdn.discordapp.com/attachments/356224772184735756/394523759417229322/awoo_weebsh.jpg" class="ui small rounded image">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	<script src="/jQuery/jquery.min.js"></script>
-	<script src="/semantic/dist/semantic.min.js"></script>
-	<script src="/semantic/dist/components/popup.min.js"></script>
-	<script src="/js/sites/index.js"></script>
+        {{> footer}}
+
+    </div>
+
+    <script src="/jQuery/jquery.min.js"></script>
+    <script src="/semantic/dist/semantic.min.js"></script>
+    <script src="/semantic/dist/components/popup.min.js"></script>
+    <script src="/js/sites/index.js"></script>
 </body>
 
 </html>
