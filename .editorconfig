@@ -8,17 +8,12 @@ root = true
 insert_final_newline = true
 
 # file settings
-[*.{js,py,json}]
+[*.{js,py,json,yml}]
 indent_style = tab
 indent_size = 2
 charset = utf-8
 
 # Tab indentation (no size specified)
 [Makefile]
-indent_style = tab
-indent_size = 2
-
-# Matches the exact files either package.json or .travis.yml
-[{package.json,.travis.yml}]
 indent_style = tab
 indent_size = 2

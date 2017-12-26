@@ -7,8 +7,6 @@ module.exports = [
 	{ register: require('bell') },
 	{ register: require('hapi-auth-cookie') },
 	{ register: require('hapi-error')},
-	{ register: require('hapi-response-time') },
-	{ register: require('therealyou') },
 	{
 		register: require("blankie"),
 		options: {
