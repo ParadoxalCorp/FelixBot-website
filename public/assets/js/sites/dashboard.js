@@ -1,3 +1,110 @@
+const updateCheckboxes = function () {
+	//fu css
+	document.getElementById("upvotePrivacy").removeAttribute('checked');
+	if (data.dataPrivacy.publicUpvote) document.getElementById("upvotePrivacy").setAttribute('checked', '');
+	document.getElementById("lovePrivacy").removeAttribute('checked');
+	if (data.dataPrivacy.publicLove) document.getElementById("lovePrivacy").setAttribute('checked', '');
+	document.getElementById("levelPrivacy").removeAttribute('checked');
+	if (data.dataPrivacy.publicLevel) document.getElementById("levelPrivacy").setAttribute('checked', '');
+	document.getElementById("pointsPrivacy").removeAttribute('checked');
+	if (data.dataPrivacy.publicPoints) document.getElementById("pointsPrivacy").setAttribute('checked', '');
+	document.getElementById("profilePrivacy").removeAttribute('checked');
+	if (data.dataPrivacy.publicProfile) document.getElementById("profilePrivacy").setAttribute('checked',
+		'');
+}
+
+const displayModal = function () {
+	if (!data.editedPrivacySettings) {
+		//In the shadows update the settings when the checkboxes are clicked
+		data.editedPrivacySettings = data.dataPrivacy;
+		document.getElementById('pointsPrivacyContainer').addEventListener('click', () => {
+			data.editedPrivacySettings.publicPoints = data.editedPrivacySettings.publicPoints ? false : true;
+		});
+		document.getElementById('lovePrivacy').addEventListener('click', () => {
+			data.editedPrivacySettings.publicLove = data.editedPrivacySettings.publicLove ? false : true;
+		});
+		document.getElementById('profilePrivacy').addEventListener('click', () => {
+			data.editedPrivacySettings.publicProfile = data.editedPrivacySettings.publicProfile ? false :
+				true;
+		});
+		document.getElementById('levelPrivacy').addEventListener('click', () => {
+			data.editedPrivacySettings.publicLevel = data.editedPrivacySettings.publicLevel ? false : true;
+		});
+		document.getElementById('upvotePrivacy').addEventListener('click', () => {
+			data.editedPrivacySettings.publicUpvote = data.editedPrivacySettings.publicUpvote ? false : true;
+		});
+	}
+	updateCheckboxes();
+	$('#privacySettingsModal')
+		.modal('show');
+}
+
+const updatePrivacySettings = async function () {
+	document.getElementById('savePrivacySettingsButton').classList.add("loading");
+	$('#body').append(
+		`
+<div class="ui segment" id="savingNotice">
+<div class="ui active dimmer">
+		<div class="ui indeterminate text loader">Saving...</div>
+</div>
+<p></p>
+</div>
+				`
+	);
+	document.getElementById('savingNotice').appendChild(document.getElementById('pusher'));
+	document.getElementById('savingNotice').appendChild(document.getElementById('footer'));
+	data.dataPrivacy = data.editedPrivacySettings;
+	const postData = $.post({
+		url: '/api/userData',
+		data: JSON.stringify(data),
+		dataType: 'json',
+		contentType: 'application/json',
+		sucess: null
+	}).done(() => {
+		$('#userSettingsContainer').append(`
+						<div class="ui positive message">
+<i class="close icon"></i>
+<div class="header">
+Success
+</div>
+<p>Successfully updated your settings
+</p></div>`);
+		$('.message .close')
+			.on('click', function () {
+				$(this)
+					.closest('.message')
+					.transition('fade');
+			});
+	})
+		.fail((error) => {
+			//console.error(error);
+			$('#userSettingsContainer').append(`
+						<div class="ui negative message">
+<i class="close icon"></i>
+<div class="header">
+Awww, something bad occurred :v
+</div>
+<p>Failed to update your settings
+</p></div>`);
+			$('.message .close')
+				.on('click', function () {
+					$(this)
+						.closest('.message')
+						.transition('fade');
+				});
+		})
+		.always(() => {
+			document.getElementById('savePrivacySettingsButton').classList.remove('loading');
+			let pusher = document.getElementById('pusher'),
+				footer = document.getElementById('footer');
+			document.getElementById('savingNotice').removeChild(document.getElementById('pusher'));
+			document.getElementById('savingNotice').removeChild(document.getElementById('footer'));
+			$('#savingNotice').remove();
+			document.getElementById('body').appendChild(pusher);
+			document.getElementById('body').appendChild(footer);
+		});
+}
+
 $('.ui.dropdown').dropdown();
 var data = "";
 var guild = {
@@ -159,24 +266,3 @@ Privacy settings
 		}, 0);
 	});
 });
-
-// $(document).ready(function () {
-// 	$("#get").click(function () {
-// 		$.get("/api/test", function (data, status) {
-// 			alert("Data: " + data + "\nStatus: " + status);
-// 		});
-// 	});
-// });
-
-
-// // changes text on load
-// //$("#push-change").load("/api/test");
-
-
-// $("form").submit(function(e) {
-// 	e.preventDefault();
-// 	var txt = $("#take_my_value_to_push").val();
-// 	$.post("/api/test", { number: txt }, function (result) {
-// 		$("#push_change").html(result.number);
-// 	});
-// });
