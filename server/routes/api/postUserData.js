@@ -4,6 +4,13 @@ const Boom = require("boom");
 module.exports = [{
 	method: 'POST',
 	path: '/api/userData',
+	config: {
+		description: "Dashboard post api",
+		auth: {
+			strategy: 'session',
+			mode: 'required'
+		},
+	},
 	handler: function (request, reply) {
 		const success = {
 			"message": "Data has been updated",

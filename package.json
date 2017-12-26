@@ -1,6 +1,6 @@
 {
 	"name": "felixbot-website",
-	"version": "0.0.3",
+	"version": "0.1.0",
 	"author": "Niputi",
 	"main": "app.js",
 	"description": "The website to the discord bot, Felix",
