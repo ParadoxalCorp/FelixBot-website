@@ -21,9 +21,12 @@
 		}
 	],
 	"scripts": {
+		"start": "node app.js",
 		"run": "nodemon app.js",
 		"snyk-protect": "snyk protect",
-		"prepare": "npm run snyk-protect"
+		"prepare": "npm run snyk-protect && npm run pretty",
+		"pretty": "./node_modules/eslint/bin/eslint.js . --fix",
+		"pretty_errs": "./node_modules/eslint/bin/eslint.js ."
 	},
 	"license": "MIT",
 	"dependencies": {
@@ -49,10 +52,17 @@
 		"vision": "~4.1.1"
 	},
 	"devDependencies": {
-		"snyk": "^1.52.0",
 		"eslint": "^4.12.0",
+		"eslint-plugin-compat": "^2.1.0",
+		"eslint-plugin-es-beautifier": "^1.0.1",
+		"eslint-plugin-hapi": "^4.1.0",
+		"eslint-plugin-import": "^2.8.0",
+		"eslint-plugin-node": "^5.2.1",
+		"eslint-plugin-promise": "^3.6.0",
+		"eslint-plugin-security": "^1.4.0",
 		"gulp": "^3.9.1",
-		"nodemon": "^1.12.1"
+		"nodemon": "^1.12.1",
+		"snyk": "^1.52.0"
 	},
 	"snyk": true
 }

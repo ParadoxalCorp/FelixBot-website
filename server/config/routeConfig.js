@@ -7,10 +7,10 @@ const website = [].concat(
 );
 
 const api = [].concat(
-	require("../routes/api/getUserData"),
-	require("../routes/api/postGuildData"),
+  require("../routes/api/getUserData"),
+  require("../routes/api/postGuildData"),
   require("../routes/api/postUserData")
 );
 
-module.exports = [...api,...website];
+module.exports = [...api, ...website];
 

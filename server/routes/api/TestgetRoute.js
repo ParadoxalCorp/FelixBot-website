@@ -4,8 +4,7 @@ module.exports = [
     path: '/api/test',
 
     handler: function (request, reply) {
-
       return reply('hello world');
-    }
-  }
+    },
+  },
 ];

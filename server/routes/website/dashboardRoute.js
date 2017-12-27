@@ -6,7 +6,7 @@ module.exports = [
       description: "Dashboard for users",
       auth: {
         strategy: 'session',
-        mode: 'required'
+        mode: 'required',
       },
     },
     handler: function (request, reply) {
@@ -15,9 +15,9 @@ module.exports = [
       };
 
       reply.view('dashboard', {
-        title: 'Dashboard', 
-        context : context
+        title: 'Dashboard',
+        context: context,
       });
     },
-  }
+  },
 ];

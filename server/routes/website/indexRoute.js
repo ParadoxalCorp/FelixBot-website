@@ -7,7 +7,7 @@ module.exports = [
       auth: {
         mode: 'try',
         strategy: 'session',
-      }
+      },
     },
     handler: function (request, reply) {
       const context = {
@@ -19,10 +19,10 @@ module.exports = [
       }
 
       reply.view('index', {
-				title: 'Homepage',
+        title: 'Homepage',
         message: 'Hello World',
-        context : context
+        context: context,
       });
-    }
-  }
+    },
+  },
 ];

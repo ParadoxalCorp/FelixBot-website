@@ -1,0 +1,34 @@
+{
+	"parserOptions": {
+		"ecmaVersion" :2017,
+		"sourceType": "module"
+	},
+	"env": {
+		"browser": true,
+		"commonjs": true,
+		"es6": true,
+		"jquery": true,
+		"amd": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:node/recommended",
+		"plugin:security/recommended",
+		"plugin:promise/recommended",
+		"plugin:es-beautifier/standard"
+	],
+	"plugins": [
+		"hapi",
+		"import",
+		"compat",
+		"node",
+		"security",
+		"promise",
+		"es-beautifier"
+	],
+	"rules": {
+		"node/no-unpublished-require" : "off",
+		"promise/always-return" : "off"
+	}
+}

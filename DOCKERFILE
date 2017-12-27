@@ -1,0 +1,11 @@
+FROM node:8.9-alpine
+LABEL maintainer Niputi
+RUN mkdir -p /website
+WORKDIR /website
+COPY . /website
+# install node packages in production mode without progressbar
+RUN npm set progress=false && \
+    npm i --only=production -s --no-progress && \
+    npm cache clean --force --no-progress
+EXPOSE 3000
+CMD [ "npm", "start" ]

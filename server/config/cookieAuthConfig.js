@@ -7,5 +7,5 @@ module.exports = {
   isSameSite: configs.auth.cookieAuth.isSameSite || "Lax",
   redirectTo: "/discord",
   redirectOnTry: false,
-  appendNext: 'redirect'
+  appendNext: 'redirect',
 };

@@ -1,168 +1,206 @@
 const updateCheckboxes = function () {
-	//fu css
-	document.getElementById("upvotePrivacy").removeAttribute('checked');
-	if (data.dataPrivacy.publicUpvote) document.getElementById("upvotePrivacy").setAttribute('checked', '');
-	document.getElementById("lovePrivacy").removeAttribute('checked');
-	if (data.dataPrivacy.publicLove) document.getElementById("lovePrivacy").setAttribute('checked', '');
-	document.getElementById("levelPrivacy").removeAttribute('checked');
-	if (data.dataPrivacy.publicLevel) document.getElementById("levelPrivacy").setAttribute('checked', '');
-	document.getElementById("pointsPrivacy").removeAttribute('checked');
-	if (data.dataPrivacy.publicPoints) document.getElementById("pointsPrivacy").setAttribute('checked', '');
-	document.getElementById("profilePrivacy").removeAttribute('checked');
-	if (data.dataPrivacy.publicProfile) document.getElementById("profilePrivacy").setAttribute('checked',
-		'');
-}
+  // fu css
+  document.getElementById("upvotePrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicUpvote) {
+    document.getElementById("upvotePrivacy").setAttribute("checked", "");
+  }
+  document.getElementById("lovePrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicLove) {
+    document.getElementById("lovePrivacy").setAttribute("checked", "");
+  }
+  document.getElementById("levelPrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicLevel) {
+    document.getElementById("levelPrivacy").setAttribute("checked", "");
+  }
+  document.getElementById("pointsPrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicPoints) {
+    document.getElementById("pointsPrivacy").setAttribute("checked", "");
+  }
+  document.getElementById("profilePrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicProfile) {
+    document.getElementById("profilePrivacy").setAttribute("checked", "");
+  }
+};
 
 const displayModal = function () {
-	if (!data.editedPrivacySettings) {
-		//In the shadows update the settings when the checkboxes are clicked
-		data.editedPrivacySettings = data.dataPrivacy;
-		document.getElementById('pointsPrivacyContainer').addEventListener('click', () => {
-			data.editedPrivacySettings.publicPoints = data.editedPrivacySettings.publicPoints ? false : true;
-		});
-		document.getElementById('lovePrivacy').addEventListener('click', () => {
-			data.editedPrivacySettings.publicLove = data.editedPrivacySettings.publicLove ? false : true;
-		});
-		document.getElementById('profilePrivacy').addEventListener('click', () => {
-			data.editedPrivacySettings.publicProfile = data.editedPrivacySettings.publicProfile ? false :
-				true;
-		});
-		document.getElementById('levelPrivacy').addEventListener('click', () => {
-			data.editedPrivacySettings.publicLevel = data.editedPrivacySettings.publicLevel ? false : true;
-		});
-		document.getElementById('upvotePrivacy').addEventListener('click', () => {
-			data.editedPrivacySettings.publicUpvote = data.editedPrivacySettings.publicUpvote ? false : true;
-		});
-	}
-	updateCheckboxes();
-	$('#privacySettingsModal')
-		.modal('show');
-}
+  if (!data.editedPrivacySettings) {
+    // In the shadows update the settings when the checkboxes are clicked
+    data.editedPrivacySettings = data.dataPrivacy;
+    document
+      .getElementById("pointsPrivacyContainer")
+      .addEventListener("click", () => {
+        data.editedPrivacySettings.publicPoints = data.editedPrivacySettings
+          .publicPoints
+          ? false
+          : true;
+      });
+    document.getElementById("lovePrivacy").addEventListener("click", () => {
+      data.editedPrivacySettings.publicLove = data.editedPrivacySettings
+        .publicLove
+        ? false
+        : true;
+    });
+    document.getElementById("profilePrivacy").addEventListener("click", () => {
+      data.editedPrivacySettings.publicProfile = data.editedPrivacySettings
+        .publicProfile
+        ? false
+        : true;
+    });
+    document.getElementById("levelPrivacy").addEventListener("click", () => {
+      data.editedPrivacySettings.publicLevel = data.editedPrivacySettings
+        .publicLevel
+        ? false
+        : true;
+    });
+    document.getElementById("upvotePrivacy").addEventListener("click", () => {
+      data.editedPrivacySettings.publicUpvote = data.editedPrivacySettings
+        .publicUpvote
+        ? false
+        : true;
+    });
+  }
+  updateCheckboxes();
+
+  $("#privacySettingsModal").modal("show");
+};
 
 const updatePrivacySettings = async function () {
-	document.getElementById('savePrivacySettingsButton').classList.add("loading");
-	$('#body').append(
-		`
-<div class="ui segment" id="savingNotice">
-<div class="ui active dimmer">
-		<div class="ui indeterminate text loader">Saving...</div>
-</div>
-<p></p>
-</div>
-				`
-	);
-	document.getElementById('savingNotice').appendChild(document.getElementById('pusher'));
-	document.getElementById('savingNotice').appendChild(document.getElementById('footer'));
-	data.dataPrivacy = data.editedPrivacySettings;
-	const postData = $.post({
-		url: '/api/userData',
-		data: JSON.stringify(data),
-		dataType: 'json',
-		contentType: 'application/json',
-		sucess: null
-	}).done(() => {
-		$('#userSettingsContainer').append(`
-						<div class="ui positive message">
-<i class="close icon"></i>
-<div class="header">
-Success
-</div>
-<p>Successfully updated your settings
-</p></div>`);
-		$('.message .close')
-			.on('click', function () {
-				$(this)
-					.closest('.message')
-					.transition('fade');
-			});
-	})
-		.fail((error) => {
-			//console.error(error);
-			$('#userSettingsContainer').append(`
-						<div class="ui negative message">
+  document.getElementById("savePrivacySettingsButton").classList.add("loading");
+  $("#body").append(`
+		<div class="ui segment" id="savingNotice">
+			<div class="ui active dimmer">
+					<div class="ui indeterminate text loader">Saving...</div>
+			</div>
+		</div>
+	`);
+
+  document
+    .getElementById("savingNotice")
+    .appendChild(document.getElementById("pusher"));
+  document
+    .getElementById("savingNotice")
+    .appendChild(document.getElementById("footer"));
+  data.dataPrivacy = data.editedPrivacySettings;
+  const postData = $.post({
+    url: "/api/userData",
+    data: JSON.stringify(data),
+    dataType: "json",
+    contentType: "application/json",
+    sucess: null,
+  })
+    .done(() => {
+      $("#userSettingsContainer").append(`
+			<div class="ui positive message">
+				<i class="close icon"></i>
+				<div class="header">
+					Success
+				</div>
+				<p>Successfully updated your settings</p>
+			</div>
+		`);
+
+      $(".message .close").on("click", function () {
+        $(this)
+          .closest(".message")
+          .transition("fade");
+      });
+    })
+    .fail(() => {
+      // console.error(error);
+      $("#userSettingsContainer").append(`
+					<div class="ui negative message">
 <i class="close icon"></i>
 <div class="header">
 Awww, something bad occurred :v
 </div>
 <p>Failed to update your settings
-</p></div>`);
-			$('.message .close')
-				.on('click', function () {
-					$(this)
-						.closest('.message')
-						.transition('fade');
-				});
-		})
-		.always(() => {
-			document.getElementById('savePrivacySettingsButton').classList.remove('loading');
-			let pusher = document.getElementById('pusher'),
-				footer = document.getElementById('footer');
-			document.getElementById('savingNotice').removeChild(document.getElementById('pusher'));
-			document.getElementById('savingNotice').removeChild(document.getElementById('footer'));
-			$('#savingNotice').remove();
-			document.getElementById('body').appendChild(pusher);
-			document.getElementById('body').appendChild(footer);
-		});
-}
+</p></div>
+			`);
+      $(".message .close").on("click", function () {
+        $(this)
+          .closest(".message")
+          .transition("fade");
+      });
+    })
+    .always(() => {
+      document
+        .getElementById("savePrivacySettingsButton")
+        .classList.remove("loading");
+      let pusher = document.getElementById("pusher"),
+        footer = document.getElementById("footer");
+      document
+        .getElementById("savingNotice")
+        .removeChild(document.getElementById("pusher"));
+      document
+        .getElementById("savingNotice")
+        .removeChild(document.getElementById("footer"));
+      $("#savingNotice").remove();
+      document.getElementById("body").appendChild(pusher);
+      document.getElementById("body").appendChild(footer);
+    });
+};
 
-$('.ui.dropdown').dropdown();
+$(".ui.dropdown").dropdown();
 var data = "";
 var guild = {
-	id: [],
-	icon: [],
-	name: []
+  icon: [],
 };
 var user = {
-	icon: ""
+  icon: "",
 };
 $(document).ready(function () {
-	$.get("/api/mutualGuilds", function (json) {
-		data = json;
+  $.get("/api/mutualGuilds", function (json) {
+    data = json;
 
-		const _map = new Map(Object.entries(data.mutualGuilds));
+    const _map = new Map(Object.entries(data.mutualGuilds));
 
-		if (data.userinfo.user.avatar == null) {
-			user.icon = "https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
-			console.log(user.icon);
-			console.log();
-		} else {
-			user.icon =
-				`https://cdn.discordapp.com/avatars/${data.id}/${data.userinfo.user.avatar}.png`;
-			console.log(user.icon);
-		}
+    if (data.userinfo.user.avatar === null) {
+      user.icon =
+				"https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
+    } else {
+      user.icon = `https://cdn.discordapp.com/avatars/${data.id}/${
+        data.userinfo.user.avatar
+      }.png`;
+    }
 
-		for (let num = 0; num < _map.size; num++) {
-			console.log(_map.get(num.toString()).id);
-			guild.id.push(_map.get(num.toString()).id);
-			guild.name.push(_map.get(num.toString()).name);
-			if (_map.get(num.toString()).icon == null) {
-				guild.icon.push("https://semantic-ui.com/images/wireframe/square-image.png");
-			} else {
-				guild.icon.push(
-					`https://cdn.discordapp.com/icons/${guild.id[num]}/${_map.get(num.toString()).icon}.png`
-				);
-			}
-		}
-		setTimeout(function () {
-			$('#userContent').append(
-				`
+    _map.forEach((product) => {
+      if (product.icon === null) {
+        guild.icon.push(
+          "https://semantic-ui.com/images/wireframe/square-image.png"
+        );
+      } else {
+        guild.icon.push(
+          `https://cdn.discordapp.com/icons/${product.id}/${
+            product.icon
+          }.png`
+        );
+      }
+    })
+
+
+    setTimeout(function () {
+      $("#userContent").append(
+        `
 <div class="content">
 <div class="header">
-<img class="ui avatar image" src=${user.icon}>${data.userinfo.user.username}#${data.userinfo.user.discriminator}
+<img class="ui avatar image" src=${user.icon}>${data.userinfo.user.username}#${
+  data.userinfo.user.discriminator
+}
 </div>
-<div class="meta">Friend</div>
 <div class="description">
-Elliot Fu is a film-maker from New York.
+Level : ${data.experience.level}
+<br>
+Experience : ${data.experience.expCount}
 </div>
 </div>
 <div class="extra content">
-<div class="left floated right aligned six wide column">
-		<i class="heartbeat icon"></i>
-		${data.generalSettings.lovePoints} Love points
-</div>
-<div class="left floated left aligned six wide column">
+		<div class="left floated right aligned six wide column">
+				<i class="heartbeat icon"></i>
+				121 Love points
+		</div>
+		<div class="right floated left aligned six wide column">
 				<i class="money icon"></i>
-				${data.generalSettings.points} points    
+				50000 points    
 		</div>
 </div>
 
@@ -231,38 +269,17 @@ Privacy settings
 		</div>
 </div>
 </div>
-`
-			);
-		}, 0);
-		setTimeout(function () {
-			$('#userContent2').append(
-				`
-<div class="content">
-		<div class="header">
-				<img class="ui avatar image" src=${user.icon}>${data.userinfo.user.username}#${data.userinfo.user.discriminator}
-		</div>
-		<div class="meta">Friend</div>
-		<div class="description">
-				Elliot Fu is a film-maker from New York.
-		</div>
-</div>
-<div class="extra content">
-		<i class="heart icon"></i> ${data.generalSettings.lovePoints} Love points
-</div>
-`
-			);
-		}, 0);
-		setTimeout(function () {
-			for (let index = 0; index <
-				_map.size; index++) {
-				$('#menu').append(
-					` <div class="item" data-value=${guild.id[index]}>
-		<img class="ui circular image flag" src=${guild.icon[index]}> ${guild.name[index]}
-		</div>
-		`
-				);
-			}
-			$('#menu').dropdown('refresh');
-		}, 0);
-	});
+`);
+    }, 0);
+
+    setTimeout(() => {
+      _map.forEach((product, index) => {
+        $("#menu").append(`
+		<div class="item" data-value=${product.id}>
+			<img class="ui circular image flag" src=${guild.icon[index]}> ${product.name}
+		</div>`)
+      })
+      $("#menu").dropdown("refresh");
+    }, 0);
+  });
 });

@@ -1,24 +1,15 @@
 "use strict";
+
 const Hapi = require("hapi");
 const server = new Hapi.Server();
 const { _BellAuth, _CookieAuth, _plugins, _routes, _views } = require("./server/config/_exports");
-const { bot_api, port, host, isSecure, auth } = require("./config/_configs");
+const { port, host } = require("./config/_configs");
 const fs = require('fs');
-const boom = require("boom");
 
 const options = {
   key: fs.readFileSync('./server/ssl/felix-bot.key'),
-  cert: fs.readFileSync('./server/ssl/felix-bot.crt')
+  cert: fs.readFileSync('./server/ssl/felix-bot.crt'),
 };
-
-server.bind({
-  boom,
-  config: {
-    bot_api: bot_api,
-    isSecure: isSecure,
-		auth : auth
-  }
-});
 
 server.connection({
   tls: options,
@@ -26,7 +17,7 @@ server.connection({
   host: host,
   router: {
     stripTrailingSlash: true,
-  }
+  },
 });
 
 server.register(_plugins, function () {
