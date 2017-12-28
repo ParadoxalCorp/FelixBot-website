@@ -1,10 +1,10 @@
 "use strict";
 
+const fs = require('fs');
 const Hapi = require("hapi");
-const server = new Hapi.Server();
 const { _BellAuth, _CookieAuth, _plugins, _routes, _views } = require("./server/config/_exports");
 const { port, host } = require("./config/_configs");
-const fs = require('fs');
+const server = new Hapi.Server();
 
 const options = {
   key: fs.readFileSync('./server/ssl/felix-bot.key'),

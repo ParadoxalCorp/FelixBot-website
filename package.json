@@ -15,6 +15,10 @@
 		"type": "git",
 		"url": "https://github.com/ParadoxalCorp/FelixBot-website.git"
 	},
+	"browserslist": [
+		"last 8 versions",
+		"ie 10"
+	],
 	"contributors": [
 		{
 			"name": "ParadoxOrigins"
@@ -52,14 +56,16 @@
 		"vision": "~4.1.1"
 	},
 	"devDependencies": {
-		"eslint": "^4.12.0",
+		"eslint": "^4.14.0",
 		"eslint-plugin-compat": "^2.1.0",
 		"eslint-plugin-es-beautifier": "^1.0.1",
+		"eslint-plugin-eslint-comments": "^2.0.1",
 		"eslint-plugin-hapi": "^4.1.0",
 		"eslint-plugin-import": "^2.8.0",
 		"eslint-plugin-node": "^5.2.1",
 		"eslint-plugin-promise": "^3.6.0",
 		"eslint-plugin-security": "^1.4.0",
+		"eslint-plugin-sort-requires": "^2.1.0",
 		"gulp": "^3.9.1",
 		"nodemon": "^1.12.1",
 		"snyk": "^1.52.0"

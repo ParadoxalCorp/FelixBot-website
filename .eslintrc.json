@@ -16,7 +16,8 @@
 		"plugin:node/recommended",
 		"plugin:security/recommended",
 		"plugin:promise/recommended",
-		"plugin:es-beautifier/standard"
+		"plugin:es-beautifier/standard",
+		"plugin:eslint-comments/recommended"
 	],
 	"plugins": [
 		"hapi",
@@ -25,10 +26,14 @@
 		"node",
 		"security",
 		"promise",
-		"es-beautifier"
+		"es-beautifier",
+		"eslint-comments",
+		"sort-requires"
 	],
 	"rules": {
 		"node/no-unpublished-require" : "off",
-		"promise/always-return" : "off"
+		"promise/always-return" : "off",
+		"sort-requires/sort-requires": 2,
+		"compat/compat": 2
 	}
 }

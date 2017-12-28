@@ -1,73 +1,72 @@
-$(document).ready(function () {
-  const updateCheckboxes = function () {
+const updateCheckboxes = function () {
   // fu css
-    document.getElementById("upvotePrivacy").removeAttribute("checked");
-    if (data.dataPrivacy.publicUpvote) {
-      document.getElementById("upvotePrivacy").setAttribute("checked", "");
-    }
-    document.getElementById("lovePrivacy").removeAttribute("checked");
-    if (data.dataPrivacy.publicLove) {
-      document.getElementById("lovePrivacy").setAttribute("checked", "");
-    }
-    document.getElementById("levelPrivacy").removeAttribute("checked");
-    if (data.dataPrivacy.publicLevel) {
-      document.getElementById("levelPrivacy").setAttribute("checked", "");
-    }
-    document.getElementById("pointsPrivacy").removeAttribute("checked");
-    if (data.dataPrivacy.publicPoints) {
-      document.getElementById("pointsPrivacy").setAttribute("checked", "");
-    }
-    document.getElementById("profilePrivacy").removeAttribute("checked");
-    if (data.dataPrivacy.publicProfile) {
-      document.getElementById("profilePrivacy").setAttribute("checked", "");
-    }
-  };
+  document.getElementById("upvotePrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicUpvote) {
+    document.getElementById("upvotePrivacy").setAttribute("checked", "");
+  }
+  document.getElementById("lovePrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicLove) {
+    document.getElementById("lovePrivacy").setAttribute("checked", "");
+  }
+  document.getElementById("levelPrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicLevel) {
+    document.getElementById("levelPrivacy").setAttribute("checked", "");
+  }
+  document.getElementById("pointsPrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicPoints) {
+    document.getElementById("pointsPrivacy").setAttribute("checked", "");
+  }
+  document.getElementById("profilePrivacy").removeAttribute("checked");
+  if (data.dataPrivacy.publicProfile) {
+    document.getElementById("profilePrivacy").setAttribute("checked", "");
+  }
+};
 
-  const displayModal = function () {
-    if (!data.editedPrivacySettings) {
+const displayModal = function () {
+  if (!data.editedPrivacySettings) {
     // In the shadows update the settings when the checkboxes are clicked
-      data.editedPrivacySettings = data.dataPrivacy;
-      document
-        .getElementById("pointsPrivacyContainer")
-        .addEventListener("click", () => {
-          data.editedPrivacySettings.publicPoints = data.editedPrivacySettings
-            .publicPoints
-            ? false
-            : true;
-        });
-      document.getElementById("lovePrivacy").addEventListener("click", () => {
-        data.editedPrivacySettings.publicLove = data.editedPrivacySettings
-          .publicLove
+    data.editedPrivacySettings = data.dataPrivacy;
+    document
+      .getElementById("pointsPrivacyContainer")
+      .addEventListener("click", () => {
+        data.editedPrivacySettings.publicPoints = data.editedPrivacySettings
+          .publicPoints
           ? false
           : true;
       });
-      document.getElementById("profilePrivacy").addEventListener("click", () => {
-        data.editedPrivacySettings.publicProfile = data.editedPrivacySettings
-          .publicProfile
-          ? false
-          : true;
-      });
-      document.getElementById("levelPrivacy").addEventListener("click", () => {
-        data.editedPrivacySettings.publicLevel = data.editedPrivacySettings
-          .publicLevel
-          ? false
-          : true;
-      });
-      document.getElementById("upvotePrivacy").addEventListener("click", () => {
-        data.editedPrivacySettings.publicUpvote = data.editedPrivacySettings
-          .publicUpvote
-          ? false
-          : true;
-      });
-    }
-    updateCheckboxes();
+    document.getElementById("lovePrivacy").addEventListener("click", () => {
+      data.editedPrivacySettings.publicLove = data.editedPrivacySettings
+        .publicLove
+        ? false
+        : true;
+    });
+    document.getElementById("profilePrivacy").addEventListener("click", () => {
+      data.editedPrivacySettings.publicProfile = data.editedPrivacySettings
+        .publicProfile
+        ? false
+        : true;
+    });
+    document.getElementById("levelPrivacy").addEventListener("click", () => {
+      data.editedPrivacySettings.publicLevel = data.editedPrivacySettings
+        .publicLevel
+        ? false
+        : true;
+    });
+    document.getElementById("upvotePrivacy").addEventListener("click", () => {
+      data.editedPrivacySettings.publicUpvote = data.editedPrivacySettings
+        .publicUpvote
+        ? false
+        : true;
+    });
+  }
+  updateCheckboxes();
 
-    $("#privacySettingsModal").modal("show");
-  };
+  $("#privacySettingsModal").modal("show");
+};
 
-  const updatePrivacySettings = async function () {
-    document.getElementById("savePrivacySettingsButton").classList.add("loading");
-    $("#body").append(`
+const updatePrivacySettings = async function () {
+  document.getElementById("savePrivacySettingsButton").classList.add("loading");
+  $("#body").append(`
 		<div class="ui segment" id="savingNotice">
 			<div class="ui active dimmer">
 					<div class="ui indeterminate text loader">Saving...</div>
@@ -75,22 +74,22 @@ $(document).ready(function () {
 		</div>
 	`);
 
-    document
-      .getElementById("savingNotice")
-      .appendChild(document.getElementById("pusher"));
-    document
-      .getElementById("savingNotice")
-      .appendChild(document.getElementById("footer"));
-    data.dataPrivacy = data.editedPrivacySettings;
-    const postData = $.post({
-      url: "/api/userData",
-      data: JSON.stringify(data),
-      dataType: "json",
-      contentType: "application/json",
-      sucess: null,
-    })
-      .done(() => {
-        $("#userSettingsContainer").append(`
+  document
+    .getElementById("savingNotice")
+    .appendChild(document.getElementById("pusher"));
+  document
+    .getElementById("savingNotice")
+    .appendChild(document.getElementById("footer"));
+  data.dataPrivacy = data.editedPrivacySettings;
+  const postData = $.post({
+    url: "/api/userData",
+    data: JSON.stringify(data),
+    dataType: "json",
+    contentType: "application/json",
+    sucess: null,
+  })
+    .done(() => {
+      $("#userSettingsContainer").append(`
 			<div class="ui positive message">
 				<i class="close icon"></i>
 				<div class="header">
@@ -100,15 +99,15 @@ $(document).ready(function () {
 			</div>
 		`);
 
-        $(".message .close").on("click", function () {
-          $(this)
-            .closest(".message")
-            .transition("fade");
-        });
-      })
-      .fail(() => {
+      $(".message .close").on("click", function () {
+        $(this)
+          .closest(".message")
+          .transition("fade");
+      });
+    })
+    .fail(() => {
       // console.error(error);
-        $("#userSettingsContainer").append(`
+      $("#userSettingsContainer").append(`
 					<div class="ui negative message">
 <i class="close icon"></i>
 <div class="header">
@@ -117,70 +116,70 @@ Awww, something bad occurred :v
 <p>Failed to update your settings
 </p></div>
 			`);
-        $(".message .close").on("click", function () {
-          $(this)
-            .closest(".message")
-            .transition("fade");
-        });
-      })
-      .always(() => {
-        document
-          .getElementById("savePrivacySettingsButton")
-          .classList.remove("loading");
-        let pusher = document.getElementById("pusher"),
-          footer = document.getElementById("footer");
-        document
-          .getElementById("savingNotice")
-          .removeChild(document.getElementById("pusher"));
-        document
-          .getElementById("savingNotice")
-          .removeChild(document.getElementById("footer"));
-        $("#savingNotice").remove();
-        document.getElementById("body").appendChild(pusher);
-        document.getElementById("body").appendChild(footer);
+      $(".message .close").on("click", function () {
+        $(this)
+          .closest(".message")
+          .transition("fade");
       });
-  };
+    })
+    .always(() => {
+      document
+        .getElementById("savePrivacySettingsButton")
+        .classList.remove("loading");
+      let pusher = document.getElementById("pusher"),
+        footer = document.getElementById("footer");
+      document
+        .getElementById("savingNotice")
+        .removeChild(document.getElementById("pusher"));
+      document
+        .getElementById("savingNotice")
+        .removeChild(document.getElementById("footer"));
+      $("#savingNotice").remove();
+      document.getElementById("body").appendChild(pusher);
+      document.getElementById("body").appendChild(footer);
+    });
+};
 
-  $(".ui.dropdown").dropdown();
-  var data = "";
-  var guild = {
-    icon: [],
-  };
-  var user = {
-    icon: "",
-  };
-  $(document).ready(function () {
-    $.get("/api/mutualGuilds", function (json) {
-      data = json;
+$(".ui.dropdown").dropdown();
+var data = "";
+var guild = {
+  icon: [],
+};
+var user = {
+  icon: "",
+};
+$(document).ready(function () {
+  $.get("/api/mutualGuilds", function (json) {
+    data = json;
 
-      const _map = new Map(Object.entries(data.mutualGuilds));
+    const _map = new Map(Object.entries(data.mutualGuilds));
 
-      if (data.userinfo.user.avatar === null) {
-        user.icon =
+    if (data.userinfo.user.avatar === null) {
+      user.icon =
 				"https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
+    } else {
+      user.icon = `https://cdn.discordapp.com/avatars/${data.id}/${
+        data.userinfo.user.avatar
+      }.png`;
+    }
+
+    _map.forEach((product) => {
+      if (product.icon === null) {
+        guild.icon.push(
+          "https://semantic-ui.com/images/wireframe/square-image.png"
+        );
       } else {
-        user.icon = `https://cdn.discordapp.com/avatars/${data.id}/${
-          data.userinfo.user.avatar
-        }.png`;
+        guild.icon.push(
+          `https://cdn.discordapp.com/icons/${product.id}/${
+            product.icon
+          }.png`
+        );
       }
-
-      _map.forEach((product) => {
-        if (product.icon === null) {
-          guild.icon.push(
-            "https://semantic-ui.com/images/wireframe/square-image.png"
-          );
-        } else {
-          guild.icon.push(
-            `https://cdn.discordapp.com/icons/${product.id}/${
-              product.icon
-            }.png`
-          );
-        }
-      })
+    })
 
 
-      setTimeout(function () {
-        $("#userContent").append(`
+    setTimeout(function () {
+      $("#userContent").append(`
 			<div class="ui fluid cards">
 			<div class="card">
 				<div class="content">
@@ -270,28 +269,27 @@ Awww, something bad occurred :v
 			</div>
 		</div>
 				`)
-      }, 0)
-      // adding items for dropdown (servers)
-      setTimeout(() => {
-        _map.forEach((product, index) => {
-          $("#menu").append(`
+    }, 0)
+    // adding items for dropdown (servers)
+    setTimeout(() => {
+      _map.forEach((product, index) => {
+        $("#menu").append(`
 		<div class="item" data-value=${product.id}>
 			<img class="ui circular image flag" src=${guild.icon[index]}> ${product.name}
 		</div>
 		`)
-        })
-        $("#menu").dropdown("refresh");
-      }, 0);
-    });
+      })
+      $("#menu").dropdown("refresh");
+    }, 0);
   });
-  // adding click events in the dom when the content has been generated
-  $(document).on("click", "#privacyModal", function () {
-    displayModal();
-  });
-  $(document).on("click", "#updateCheckboxes", function () {
-    updateCheckboxes();
-  });
-  $(document).on("click", "#savePrivacySettingsButton", function () {
-    updatePrivacySettings();
-  });
+});
+// adding click events in the dom when the content has been generated
+$(document).on("click", "#privacyModal", function () {
+  displayModal();
+});
+$(document).on("click", "#updateCheckboxes", function () {
+  updateCheckboxes();
+});
+$(document).on("click", "#savePrivacySettingsButton", function () {
+  updatePrivacySettings();
 });

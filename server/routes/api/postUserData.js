@@ -1,5 +1,5 @@
-const wrapper = require("../../config/botWrapperConfig");
 const Boom = require("boom");
+const wrapper = require("../../config/botWrapperConfig");
 
 module.exports = [{
   method: 'POST',
@@ -19,7 +19,7 @@ module.exports = [{
 
     wrapper.postUser(request.payload).then((data) => {
       // console.log('returned', data);
-      if (data.id) return reply(success).code(200); // eslint-disable-line promise/always-return
+      if (data.id) return reply(success).code(200);
     }).catch(() => reply(Boom.serverUnavailable("The Felix bot is down.")));
   },
 }];

@@ -1,5 +1,5 @@
-const Joi = require('joi');
 const Boom = require('boom');
+const Joi = require('joi');
 
 module.exports = [
   {

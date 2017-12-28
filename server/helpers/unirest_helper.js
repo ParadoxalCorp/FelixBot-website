@@ -3,8 +3,8 @@
  * Might not ever be used
  */
 
-const unirest = require('unirest');
 const EventEmitter = require("events").EventEmitter;
+const unirest = require('unirest');
 const body = new EventEmitter();
 
 const get_noToken = (uri) => {

@@ -1,7 +1,7 @@
-const Joi = require('joi');
-const Boom = require("boom");
-const wrapper = require("../../config/botWrapperConfig");
 const _ = require("underscore");
+const Boom = require("boom");
+const Joi = require('joi');
+const wrapper = require("../../config/botWrapperConfig");
 
 module.exports = [
   {
