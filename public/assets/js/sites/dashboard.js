@@ -1,72 +1,72 @@
 const updateCheckboxes = function () {
-  // fu css
-  document.getElementById("upvotePrivacy").removeAttribute("checked");
-  if (data.dataPrivacy.publicUpvote) {
-    document.getElementById("upvotePrivacy").setAttribute("checked", "");
-  }
-  document.getElementById("lovePrivacy").removeAttribute("checked");
-  if (data.dataPrivacy.publicLove) {
-    document.getElementById("lovePrivacy").setAttribute("checked", "");
-  }
-  document.getElementById("levelPrivacy").removeAttribute("checked");
-  if (data.dataPrivacy.publicLevel) {
-    document.getElementById("levelPrivacy").setAttribute("checked", "");
-  }
-  document.getElementById("pointsPrivacy").removeAttribute("checked");
-  if (data.dataPrivacy.publicPoints) {
-    document.getElementById("pointsPrivacy").setAttribute("checked", "");
-  }
-  document.getElementById("profilePrivacy").removeAttribute("checked");
-  if (data.dataPrivacy.publicProfile) {
-    document.getElementById("profilePrivacy").setAttribute("checked", "");
-  }
+	// fu css
+	document.getElementById("upvotePrivacy").removeAttribute("checked");
+	if (data.dataPrivacy.publicUpvote) {
+		document.getElementById("upvotePrivacy").setAttribute("checked", "");
+	}
+	document.getElementById("lovePrivacy").removeAttribute("checked");
+	if (data.dataPrivacy.publicLove) {
+		document.getElementById("lovePrivacy").setAttribute("checked", "");
+	}
+	document.getElementById("levelPrivacy").removeAttribute("checked");
+	if (data.dataPrivacy.publicLevel) {
+		document.getElementById("levelPrivacy").setAttribute("checked", "");
+	}
+	document.getElementById("pointsPrivacy").removeAttribute("checked");
+	if (data.dataPrivacy.publicPoints) {
+		document.getElementById("pointsPrivacy").setAttribute("checked", "");
+	}
+	document.getElementById("profilePrivacy").removeAttribute("checked");
+	if (data.dataPrivacy.publicProfile) {
+		document.getElementById("profilePrivacy").setAttribute("checked", "");
+	}
 };
 
 const displayModal = function () {
-  if (!data.editedPrivacySettings) {
-    // In the shadows update the settings when the checkboxes are clicked
-    data.editedPrivacySettings = data.dataPrivacy;
-    document
-      .getElementById("pointsPrivacyContainer")
-      .addEventListener("click", () => {
-        data.editedPrivacySettings.publicPoints = data.editedPrivacySettings
-          .publicPoints
-          ? false
-          : true;
-      });
-    document.getElementById("lovePrivacy").addEventListener("click", () => {
-      data.editedPrivacySettings.publicLove = data.editedPrivacySettings
-        .publicLove
-        ? false
-        : true;
-    });
-    document.getElementById("profilePrivacy").addEventListener("click", () => {
-      data.editedPrivacySettings.publicProfile = data.editedPrivacySettings
-        .publicProfile
-        ? false
-        : true;
-    });
-    document.getElementById("levelPrivacy").addEventListener("click", () => {
-      data.editedPrivacySettings.publicLevel = data.editedPrivacySettings
-        .publicLevel
-        ? false
-        : true;
-    });
-    document.getElementById("upvotePrivacy").addEventListener("click", () => {
-      data.editedPrivacySettings.publicUpvote = data.editedPrivacySettings
-        .publicUpvote
-        ? false
-        : true;
-    });
-  }
-  updateCheckboxes();
+	if (!data.editedPrivacySettings) {
+		// In the shadows update the settings when the checkboxes are clicked
+		data.editedPrivacySettings = data.dataPrivacy;
+		document
+			.getElementById("pointsPrivacyContainer")
+			.addEventListener("click", () => {
+				data.editedPrivacySettings.publicPoints = data.editedPrivacySettings
+					.publicPoints
+					? false
+					: true;
+			});
+		document.getElementById("lovePrivacy").addEventListener("click", () => {
+			data.editedPrivacySettings.publicLove = data.editedPrivacySettings
+				.publicLove
+				? false
+				: true;
+		});
+		document.getElementById("profilePrivacy").addEventListener("click", () => {
+			data.editedPrivacySettings.publicProfile = data.editedPrivacySettings
+				.publicProfile
+				? false
+				: true;
+		});
+		document.getElementById("levelPrivacy").addEventListener("click", () => {
+			data.editedPrivacySettings.publicLevel = data.editedPrivacySettings
+				.publicLevel
+				? false
+				: true;
+		});
+		document.getElementById("upvotePrivacy").addEventListener("click", () => {
+			data.editedPrivacySettings.publicUpvote = data.editedPrivacySettings
+				.publicUpvote
+				? false
+				: true;
+		});
+	}
+	updateCheckboxes();
 
-  $("#privacySettingsModal").modal("show");
+	$("#privacySettingsModal").modal("show");
 };
 
 const updatePrivacySettings = async function () {
-  document.getElementById("savePrivacySettingsButton").classList.add("loading");
-  $("#body").append(`
+	document.getElementById("savePrivacySettingsButton").classList.add("loading");
+	$("#body").append(`
 		<div class="ui segment" id="savingNotice">
 			<div class="ui active dimmer">
 					<div class="ui indeterminate text loader">Saving...</div>
@@ -74,22 +74,23 @@ const updatePrivacySettings = async function () {
 		</div>
 	`);
 
-  document
-    .getElementById("savingNotice")
-    .appendChild(document.getElementById("pusher"));
-  document
-    .getElementById("savingNotice")
-    .appendChild(document.getElementById("footer"));
-  data.dataPrivacy = data.editedPrivacySettings;
-  const postData = $.post({
-    url: "/api/userData",
-    data: JSON.stringify(data),
-    dataType: "json",
-    contentType: "application/json",
-    sucess: null,
-  })
-    .done(() => {
-      $("#userSettingsContainer").append(`
+	document
+		.getElementById("savingNotice")
+		.appendChild(document.getElementById("pusher"));
+	document
+		.getElementById("savingNotice")
+		.appendChild(document.getElementById("footer"));
+	data.dataPrivacy = data.editedPrivacySettings;
+	// eslint-disable-next-line no-unused-vars
+	const postData = $.post({ // deepscan-disable-line UNUSED_DECL
+		url: "/api/userData",
+		data: JSON.stringify(data),
+		dataType: "json",
+		contentType: "application/json",
+		sucess: null,
+	})
+		.done(() => {
+			$("#userSettingsContainer").append(`
 			<div class="ui positive message">
 				<i class="close icon"></i>
 				<div class="header">
@@ -99,15 +100,15 @@ const updatePrivacySettings = async function () {
 			</div>
 		`);
 
-      $(".message .close").on("click", function () {
-        $(this)
-          .closest(".message")
-          .transition("fade");
-      });
-    })
-    .fail(() => {
-      // console.error(error);
-      $("#userSettingsContainer").append(`
+			$(".message .close").on("click", function () {
+				$(this)
+					.closest(".message")
+					.transition("fade");
+			});
+		})
+		.fail(() => {
+			// console.error(error);
+			$("#userSettingsContainer").append(`
 					<div class="ui negative message">
 <i class="close icon"></i>
 <div class="header">
@@ -116,75 +117,73 @@ Awww, something bad occurred :v
 <p>Failed to update your settings
 </p></div>
 			`);
-      $(".message .close").on("click", function () {
-        $(this)
-          .closest(".message")
-          .transition("fade");
-      });
-    })
-    .always(() => {
-      document
-        .getElementById("savePrivacySettingsButton")
-        .classList.remove("loading");
-      let pusher = document.getElementById("pusher"),
-        footer = document.getElementById("footer");
-      document
-        .getElementById("savingNotice")
-        .removeChild(document.getElementById("pusher"));
-      document
-        .getElementById("savingNotice")
-        .removeChild(document.getElementById("footer"));
-      $("#savingNotice").remove();
-      document.getElementById("body").appendChild(pusher);
-      document.getElementById("body").appendChild(footer);
-    });
+			$(".message .close").on("click", function () {
+				$(this)
+					.closest(".message")
+					.transition("fade");
+			});
+		})
+		.always(() => {
+			document
+				.getElementById("savePrivacySettingsButton")
+				.classList.remove("loading");
+			let pusher = document.getElementById("pusher"),
+				footer = document.getElementById("footer");
+			document
+				.getElementById("savingNotice")
+				.removeChild(document.getElementById("pusher"));
+			document
+				.getElementById("savingNotice")
+				.removeChild(document.getElementById("footer"));
+			$("#savingNotice").remove();
+			document.getElementById("body").appendChild(pusher);
+			document.getElementById("body").appendChild(footer);
+		});
 };
 
 $(".ui.dropdown").dropdown();
-var data = "";
-var guild = {
-  icon: [],
+let data = "";
+const guild = {
+	icon: [],
 };
-var user = {
-  icon: "",
+const user = {
+	icon: "",
 };
-$(document).ready(function () {
-  $.get("/api/mutualGuilds", function (json) {
-    data = json;
+let selectedServer;
+$.get("/api/mutualGuilds", function (json) {
+	data = json;
 
-    const _map = new Map(Object.entries(data.mutualGuilds));
+	const _map = new Map(Object.entries(data.mutualGuilds));
 
-    if (data.userinfo.user.avatar === null) {
-      user.icon =
-				"https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
-    } else {
-      user.icon = `https://cdn.discordapp.com/avatars/${data.id}/${
-        data.userinfo.user.avatar
-      }.png`;
-    }
+	if (data.userinfo.user.avatar === null) {
+		user.icon =
+			"https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png";
+	} else {
+		user.icon = `https://cdn.discordapp.com/avatars/${data.id}/${
+			data.userinfo.user.avatar
+		}.png`;
+	}
 
-    _map.forEach((product) => {
-      if (product.icon === null) {
-        guild.icon.push(
-          "https://semantic-ui.com/images/wireframe/square-image.png"
-        );
-      } else {
-        guild.icon.push(
-          `https://cdn.discordapp.com/icons/${product.id}/${
-            product.icon
-          }.png`
-        );
-      }
-    })
+	_map.forEach((product) => {
+		if (product.icon === null) {
+			guild.icon.push(
+				"https://semantic-ui.com/images/wireframe/square-image.png"
+			);
+		} else {
+			guild.icon.push(
+				`https://cdn.discordapp.com/icons/${product.id}/${product.icon}.png`
+			);
+		}
+	});
 
-
-    setTimeout(function () {
-      $("#userContent").append(`
+	setTimeout(function () {
+		$("#userContent").append(`
 			<div class="ui fluid cards">
 			<div class="card">
 				<div class="content">
 					<div class="header">
-						<img class="ui avatar image" src=${user.icon}>${data.userinfo.user.username}#${data.userinfo.user.discriminator}
+						<img class="ui avatar image" src=${user.icon}>
+							${data.userinfo.user.username}#${data.userinfo.user.discriminator}
 					</div>
 					<div class="description">
 						Level : ${data.experience.level}
@@ -257,8 +256,7 @@ $(document).ready(function () {
 					</div>
 					<div class="actions">
 						<div class="ui negative button" id="updateCheckboxes">
-							Discard changes
-							<i class="trash outline icon"></i>
+							Discard changes <i class="trash outline icon"></i>
 						</div>
 						<div class="ui positive right labeled icon button" id="savePrivacySettingsButton">
 							Save changes
@@ -268,28 +266,263 @@ $(document).ready(function () {
 				</div>
 			</div>
 		</div>
-				`)
-    }, 0)
-    // adding items for dropdown (servers)
-    setTimeout(() => {
-      _map.forEach((product, index) => {
-        $("#menu").append(`
+				`);
+	}, 0);
+	// adding items for dropdown (servers)
+	setTimeout(() => {
+		_map.forEach((product, index) => {
+			$("#menu").append(`
 		<div class="item" data-value=${product.id}>
 			<img class="ui circular image flag" src=${guild.icon[index]}> ${product.name}
 		</div>
-		`)
-      })
-      $("#menu").dropdown("refresh");
-    }, 0);
-  });
+		`);
+		});
+		setTimeout(() => {
+			$(".dropdown.fluid.server").dropdown("refresh");
+		}, 0);
+	}, 0);
+
+	// adding click events in the dom when the content has been generated
+	$(".dropdown.fluid.server").dropdown("setting", "onChange", function () {
+		_map.forEach((product) => {
+			if (product.id === $(".dropdown.fluid.server").dropdown("get value")) {
+				selectedServer = product;
+
+				$("#serverSettings").empty();
+
+				$("#serverSettings").append(`
+			<div class="ui form">
+			<div class="fields">
+				<div class="six wide field">
+					<label>Set prefix</label>
+					<input type="text" name="prefix" id="prefix">
+				</div>
+			</div>
+			<div class="ui form">
+				<div class="fields">
+					<div class="six wide field">
+						<label>Set greeting message</label>
+						<div class="ui blue button" id="greetModalSettings">Open settings</div>
+					</div>
+				</div>
+				<div class="fields">
+					<div class="six wide field">
+						<label>Set farewell settings</label>
+						<div class="ui blue button" id="farewellModalSettings">Open settings</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="ui modal farewell">
+		<i class="close icon"></i>
+		<div class="header">
+			${selectedServer.name}'s farewell message settings
+		</div>
+		<div class="image content">
+			<div class="ui small circular image">
+				<img src=${selectedServer.icon === null ? "https://semantic-ui.com/images/wireframe/square-image.png" : `https://cdn.discordapp.com/icons/${selectedServer.id}/${selectedServer.icon}.png`}>
+			</div>
+			<div class="content">
+				<div class="ui form">
+					<div class="field">
+						<div class="fields">
+							<div class="twelve wide field">
+								<label>Set farewell message</label>
+								<input type="text" name="setFarewell" id="FarewellMsg" placeholder="farewell message here" ${selectedServer.database.onEvent.guildMemberRemove.farewell.enabled	? "" : "disabled"}>
+							</div>
+						</div>
+						<label>Targeted channel:</label>
+						<div class="ui fluid search selection dropdown FarewellChannel">
+						<i class="dropdown icon"></i>
+							<div class="default text">Select channel</div>
+							<div class="menu">
+								${selectedServer.channels.map(product => product.type === 0 ? `<div class="item" data-value="${product.id}">${product.name}</div>` : "").join("")}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="actions">
+			<div class="ui blue button" id="btnFarewellMsg">
+				${selectedServer.database.onEvent.guildMemberRemove.farewell.enabled ? "Disable" : "Enable"}
+			</div>
+			<div class="ui negative button" id="updateCheckboxes">
+				Discard changes <i class="trash outline icon"></i>
+			</div>
+			<div class="ui positive right labeled icon button" id="savePrivacySettingsButton">
+				Save changes
+				<i class="checkmark icon"></i>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="ui modal greeting">
+  <i class="close icon"></i>
+  <div class="header">
+    ${selectedServer.name}'s greeting message settings
+  </div>
+  <div class="image content">
+    <div class="ui small circular image">
+      <img src=${selectedServer.icon === null ? "https://semantic-ui.com/images/wireframe/square-image.png" : `https://cdn.discordapp.com/icons/${selectedServer.id}/${selectedServer.icon}.png`}>
+    </div>
+    <div class="content">
+      <div class="ui form">
+        <div class="field">
+          <div class="fields">
+            <div class="twelve wide field">
+              <label>Set greeting message</label>
+              <input type="text" name="setGreeting" id="GreetMsg" placeholder="greeting message here" ${selectedServer.database.onEvent.guildMemberAdd.greetings.enabled ? "" : "disabled"}>
+            </div>
+          </div>
+          <label>Targeted channel:</label>
+          <div class="ui fluid search selection dropdown GreetingChannel">
+            <i class="dropdown icon"></i>
+            <div class="default text">Select channel</div>
+            <div class="menu">
+              ${selectedServer.channels.map(product => product.type === 0 ? `
+              <div class="item" data-value="${product.id}">${product.name}</div>` : "").join("")}
+            </div>
+          </div>
+          <select class="ui fluid search dropdown test" multiple="">
+            <option value="">State</option>
+            <option value="AL">Alabama</option>
+            <option value="AK">Alaska</option>
+            <option value="AZ">Arizona</option>
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="DC">District Of Columbia</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="HI">Hawaii</option>
+            <option value="ID">Idaho</option>
+            <option value="IL">Illinois</option>
+            <option value="IN">Indiana</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="MT">Montana</option>
+            <option value="NE">Nebraska</option>
+            <option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NM">New Mexico</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="ND">North Dakota</option>
+            <option value="OH">Ohio</option>
+            <option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option>
+            <option value="TN">Tennessee</option>
+            <option value="TX">Texas</option>
+            <option value="UT">Utah</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WA">Washington</option>
+            <option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option>
+            <option value="WY">Wyoming</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui blue button" id="btnGreetMsg">
+      ${selectedServer.database.onEvent.guildMemberAdd.greetings.enabled ? "Disable" : "Enable"}
+    </div>
+    <div class="ui negative button" id="updateCheckboxes">
+      Discard changes
+      <i class="trash outline icon"></i>
+    </div>
+    <div class="ui positive right labeled icon button" id="savePrivacySettingsButton">
+      Save changes
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>
+				`);
+			}
+		});
+	});
 });
-// adding click events in the dom when the content has been generated
+
 $(document).on("click", "#privacyModal", function () {
-  displayModal();
+	displayModal();
 });
 $(document).on("click", "#updateCheckboxes", function () {
-  updateCheckboxes();
+	updateCheckboxes();
 });
 $(document).on("click", "#savePrivacySettingsButton", function () {
-  updatePrivacySettings();
+	updatePrivacySettings();
+});
+
+$(document).on("click", "#btnGreetMsg", function () {
+	if ((document.getElementById("btnGreetMsg").innerHTML) === "Disable") {
+		$('#GreetMsg').prop("disabled", true);
+		document.getElementById("btnGreetMsg").innerHTML = "Enable"
+		$('.ui.dropdown.GreetingChannel').addClass("disabled")
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = false
+	} else {
+		$('#GreetMsg').prop("disabled", false);
+		document.getElementById("btnGreetMsg").innerHTML = "Disable"
+		$('.ui.dropdown.GreetingChannel').removeClass("disabled")
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = true
+	}
+});
+
+$(document).on("click", "#btnFarewellMsg", function () {
+	if ((document.getElementById("btnFarewellMsg").innerHTML) === "Disable") {
+		$('#FarewellMsg').prop("disabled", true);
+		document.getElementById("btnFarewellMsg").innerHTML = "Enable"
+		$('.ui.dropdown.FarewellChannel').addClass("disabled")
+		selectedServer.database.onEvent.guildMemberRemove.farewell.enabled = false;
+	} else {
+		$('#FarewellMsg').prop("disabled", false);
+		document.getElementById("btnFarewellMsg").innerHTML = "Disable";
+		$('.ui.dropdown.FarewellChannel').removeClass("disabled")
+		selectedServer.database.onEvent.guildMemberRemove.farewell.enabled = true;
+	}
+});
+
+$(document).on("click", "#farewellModalSettings", function () {
+	$('.ui.modal.farewell').modal({
+		autofocus: false,
+	}).modal('show');
+
+	$('.ui.dropdown.FarewellChannel').dropdown();
+	selectedServer.database.onEvent.guildMemberRemove.farewell.enabled === false ? $('.ui.dropdown.FarewellChannel').addClass("disabled") : null;
+});
+
+$(document).on("click", "#greetModalSettings", function () {
+	$('.ui.modal.greeting').modal({
+		autofocus: false,
+	}).modal('show');
+
+	selectedServer.database.onEvent.guildMemberAdd.greetings.enabled === false ? $('.ui.dropdown.GreetingChannel').addClass("disabled") : null;
+	$('.ui.dropdown.GreetingChannel').dropdown();
+	$('.ui.dropdown.test').dropdown({ allowAdditions: true })
 });

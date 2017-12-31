@@ -1,10 +1,10 @@
 module.exports = [
-  {
-    method: 'GET',
-    path: '/api/test',
+	{
+		method: 'GET',
+		path: '/api/test',
 
-    handler: function (request, reply) {
-      return reply('hello world');
-    },
-  },
+		handler: function (request, reply) {
+			return reply('hello world');
+		},
+	},
 ];

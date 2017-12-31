@@ -31,9 +31,11 @@
 		"sort-requires"
 	],
 	"rules": {
+		"security/detect-object-injection" : "off",
 		"node/no-unpublished-require" : "off",
-		"promise/always-return" : "off",
 		"sort-requires/sort-requires": 2,
+		"promise/always-return" : "off",
+		"indent": ["error", "tab"],
 		"compat/compat": 2
 	}
 }
