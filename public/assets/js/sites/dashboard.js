@@ -394,9 +394,9 @@ $.get("/api/mutualGuilds", function (json) {
 					</div>
 					<label>Assigned role(s) when user joins:</label>
           <select class="ui fluid search dropdown test" multiple="">
-            <option value="">Select a role</option>
-            ${selectedServer.roles.map(product => product.name !== "@everyone" ? `
-						<option value=${product.id}>${product.name}</option>` : "").join("")}
+            <option class="default text" value="">Select a role</option>
+            ${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
+						<option class="item" data-value=${product.id}>${product.name}</option>` : "").join("")}
           </select>
         </div>
       </div>
