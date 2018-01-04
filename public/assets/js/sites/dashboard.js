@@ -1,3 +1,56 @@
+// update settingsFunc
+// eslint-disable-next-line no-unused-vars
+const postDataFunc = (url, data) => $.post({
+	url: url,
+	data: JSON.stringify(data),
+	dataType: "json",
+	contentType: "application/json",
+	sucess: null,
+}).done(() => {
+	$("#userSettingsContainer").append(`
+	<div class="ui positive message">
+		<i class="close icon"></i>
+		<div class="header">
+			Success
+		</div>
+		<p>Successfully updated your settings</p>
+	</div>
+`);
+	$(".message .close").on("click", function () {
+		$(this)
+			.closest(".message")
+			.transition("fade");
+	});
+}).fail(() => {
+	// console.error(error);
+	$("#userSettingsContainer").append(`
+			<div class="ui negative message">
+<i class="close icon"></i>
+<div class="header">
+Awww, something bad occurred :v
+</div>
+<p>Failed to update your settings
+</p></div>
+	`);
+	$(".message .close").on("click", function () {
+		$(this)
+			.closest(".message")
+			.transition("fade");
+	});
+})
+
+// functions
+
+const roleOptions = (product, defaultText) => (
+	`<option class="default text" value="">${defaultText}</option>
+	${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
+	<option class="item" data-value=${product.id}>${product.name}</option>` : "").join("")}`
+);
+const channelOptions = selectedServer => (
+	`${selectedServer.channels.map(product => product.type === 0 ? `
+		<div class="item" data-value="${product.id}">${product.name}</div>` : "").join("")}`
+)
+
 const updateCheckboxes = function () {
 	// fu css
 	document.getElementById("upvotePrivacy").removeAttribute("checked");
@@ -150,6 +203,7 @@ const user = {
 	icon: "",
 };
 let selectedServer;
+// calls the api to get data
 $.get("/api/mutualGuilds", function (json) {
 	data = json;
 
@@ -164,6 +218,7 @@ $.get("/api/mutualGuilds", function (json) {
 		}.png`;
 	}
 
+	// making sure theres a defualt server image if the server have not chosen one
 	_map.forEach((product) => {
 		if (product.icon === null) {
 			guild.icon.push(
@@ -176,6 +231,7 @@ $.get("/api/mutualGuilds", function (json) {
 		}
 	});
 
+	// adding the profile html
 	setTimeout(function () {
 		$("#userContent").append(`
 			<div class="ui fluid cards">
@@ -282,15 +338,10 @@ $.get("/api/mutualGuilds", function (json) {
 		}, 0);
 	}, 0);
 
-	// adding click events in the dom when the content has been generated
+	// when a server has been chosen html will be inserted
 	$(".dropdown.fluid.server").dropdown("setting", "onChange", function () {
 		_map.forEach((product) => {
 			if (product.id === $(".dropdown.fluid.server").dropdown("get value")) {
-				const roleOptions = (product, defaultText) => (
-					`<option class="default text" value="">${defaultText}</option>
-					${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
-					<option class="item" data-value=${product.id}>${product.name}</option>` : "").join("")}`
-				);
 				selectedServer = product;
 
 				$("#serverSettings").empty();
@@ -314,6 +365,12 @@ $.get("/api/mutualGuilds", function (json) {
 					<div class="six wide field">
 						<label>Set farewell settings</label>
 						<div class="ui blue button" id="farewellModalSettings">Open settings</div>
+					</div>
+				</div>
+				<div class="fields">
+					<div class="six wide field">
+						<label>Set starboard settings</label>
+						<div class="ui blue button" id="starboardModalSettings">Open settings</div>
 					</div>
 				</div>
 			</div>
@@ -344,7 +401,7 @@ $.get("/api/mutualGuilds", function (json) {
 						<i class="dropdown icon"></i>
 							<div class="default text">Select channel</div>
 							<div class="menu">
-								${selectedServer.channels.map(product => product.type === 0 ? `<div class="item" data-value="${product.id}">${product.name}</div>` : "").join("")}
+							${channelOptions(selectedServer)}
 							</div>
 						</div>
 					</div>
@@ -393,12 +450,11 @@ $.get("/api/mutualGuilds", function (json) {
             <i class="dropdown icon"></i>
             <div class="default text">Select channel</div>
             <div class="menu">
-              ${selectedServer.channels.map(product => product.type === 0 ? `
-              <div class="item" data-value="${product.id}">${product.name}</div>` : "").join("")}
+						${channelOptions(selectedServer)}
             </div>
 					</div>
 					<label>Assigned role(s) when user joins:</label>
-          <select class="ui fluid search dropdown test" multiple="">
+          <select class="ui fluid search dropdown roleoptions" multiple="">
             ${roleOptions(product, "select a role")}
           </select>
         </div>
@@ -419,6 +475,49 @@ $.get("/api/mutualGuilds", function (json) {
     </div>
   </div>
 </div>
+
+<div class="ui modal starboard">
+<i class="close icon"></i>
+<div class="header">
+	${selectedServer.name}'s greeting message settings
+</div>
+<div class="image content">
+	<div class="ui small circular image">
+		<img src=${selectedServer.icon === null ? "https://semantic-ui.com/images/wireframe/square-image.png" : `https://cdn.discordapp.com/icons/${selectedServer.id}/${selectedServer.icon}.png`}>
+	</div>
+	<div class="content">
+		<div class="ui form">
+				<div class="fields">
+					<div class="twelve wide field">
+						<label>Set greeting message</label>
+						<input type="text" name="setGreeting" id="minNumOfStars" placeholder="mininum number of stars">
+					</div>
+				</div>
+				<label>Targeted channel:</label>
+				<div class="ui fluid search selection dropdown StarboardChannel">
+					<i class="dropdown icon"></i>
+					<div class="default text">Select starboard channel</div>
+					<div class="menu">
+						${channelOptions(selectedServer)}
+					</div>
+				</div>
+		</div>
+	</div>
+</div>
+<div class="actions">
+	<div class="ui blue button" id="resetStarboardBtn">
+		Reset starboard
+	</div>
+	<div class="ui negative button" id="updateCheckboxes">
+		Discard changes
+		<i class="trash outline icon"></i>
+	</div>
+	<div class="ui positive right labeled icon button" id="savePrivacySettingsButton">
+		Save changes
+		<i class="checkmark icon"></i>
+	</div>
+</div>
+</div>
 				`);
 			}
 		});
@@ -434,6 +533,8 @@ $(document).on("click", "#updateCheckboxes", function () {
 $(document).on("click", "#savePrivacySettingsButton", function () {
 	updatePrivacySettings();
 });
+
+// farewell settings
 
 $(document).on("click", "#btnFarewellMsg", function () {
 	if ((document.getElementById("btnFarewellMsg").innerHTML) === "Disable") {
@@ -458,6 +559,8 @@ $(document).on("click", "#farewellModalSettings", function () {
 	selectedServer.database.onEvent.guildMemberRemove.farewell.enabled === false ? $('.ui.dropdown.FarewellChannel').addClass("disabled") : null;
 });
 
+// greetings settings
+
 $(document).on("click", "#btnGreetMsg", function () {
 	if ((document.getElementById("btnGreetMsg").innerHTML) === "Disable") {
 		$('#GreetMsg').prop("disabled", true);
@@ -479,6 +582,30 @@ $(document).on("click", "#greetModalSettings", function () {
 
 	selectedServer.database.onEvent.guildMemberAdd.greetings.enabled === false ? $('.ui.dropdown.GreetingChannel').addClass("disabled") : null;
 	$('.ui.dropdown.GreetingChannel').dropdown();
-	$('.ui.dropdown.test').dropdown({ allowAdditions: true })
+	$('.ui.dropdown.roleoptions').dropdown({ allowAdditions: true })
 });
 
+// starboard settings
+
+$(document).on("click", "#starboardSettings", function () {
+	if ((document.getElementById("starboardSettings").innerHTML) === "Disable") {
+		$('#GreetMsg').prop("disabled", true);
+		document.getElementById("starboardSettings").innerHTML = "Enable"
+		$('.ui.dropdown.GreetingChannel').addClass("disabled")
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = false
+	} else {
+		$('#GreetMsg').prop("disabled", false);
+		document.getElementById("starboardSettings").innerHTML = "Disable"
+		$('.ui.dropdown.GreetingChannel').removeClass("disabled")
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = true;
+	}
+});
+
+$(document).on("click", "#starboardModalSettings", function () {
+	$('.ui.modal.starboard').modal({
+		autofocus: false,
+	}).modal('show');
+
+	selectedServer.database.onEvent.guildMemberAdd.greetings.enabled === false ? $('.ui.dropdown.starboard').addClass("disabled") : null;
+	$('.ui.dropdown.StarboardChannel').dropdown();
+});
