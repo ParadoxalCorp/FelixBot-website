@@ -273,7 +273,7 @@ $.get("/api/mutualGuilds", function (json) {
 		_map.forEach((product, index) => {
 			$("#menu").append(`
 		<div class="item" data-value=${product.id}>
-			<img class="ui circular image flag" src=${guild.icon[index]}> ${product.name}
+			<img class="ui circular image" src=${guild.icon[index]}> ${product.name}
 		</div>
 		`);
 		});
@@ -286,6 +286,11 @@ $.get("/api/mutualGuilds", function (json) {
 	$(".dropdown.fluid.server").dropdown("setting", "onChange", function () {
 		_map.forEach((product) => {
 			if (product.id === $(".dropdown.fluid.server").dropdown("get value")) {
+				const roleOptions = (product, defaultText) => (
+					`<option class="default text" value="">${defaultText}</option>
+					${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
+					<option class="item" data-value=${product.id}>${product.name}</option>` : "").join("")}`
+				);
 				selectedServer = product;
 
 				$("#serverSettings").empty();
@@ -394,9 +399,7 @@ $.get("/api/mutualGuilds", function (json) {
 					</div>
 					<label>Assigned role(s) when user joins:</label>
           <select class="ui fluid search dropdown test" multiple="">
-            <option class="default text" value="">Select a role</option>
-            ${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
-						<option class="item" data-value=${product.id}>${product.name}</option>` : "").join("")}
+            ${roleOptions(product, "select a role")}
           </select>
         </div>
       </div>
@@ -432,20 +435,6 @@ $(document).on("click", "#savePrivacySettingsButton", function () {
 	updatePrivacySettings();
 });
 
-$(document).on("click", "#btnGreetMsg", function () {
-	if ((document.getElementById("btnGreetMsg").innerHTML) === "Disable") {
-		$('#GreetMsg').prop("disabled", true);
-		document.getElementById("btnGreetMsg").innerHTML = "Enable"
-		$('.ui.dropdown.GreetingChannel').addClass("disabled")
-		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = false
-	} else {
-		$('#GreetMsg').prop("disabled", false);
-		document.getElementById("btnGreetMsg").innerHTML = "Disable"
-		$('.ui.dropdown.GreetingChannel').removeClass("disabled")
-		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = true
-	}
-});
-
 $(document).on("click", "#btnFarewellMsg", function () {
 	if ((document.getElementById("btnFarewellMsg").innerHTML) === "Disable") {
 		$('#FarewellMsg').prop("disabled", true);
@@ -469,6 +458,20 @@ $(document).on("click", "#farewellModalSettings", function () {
 	selectedServer.database.onEvent.guildMemberRemove.farewell.enabled === false ? $('.ui.dropdown.FarewellChannel').addClass("disabled") : null;
 });
 
+$(document).on("click", "#btnGreetMsg", function () {
+	if ((document.getElementById("btnGreetMsg").innerHTML) === "Disable") {
+		$('#GreetMsg').prop("disabled", true);
+		document.getElementById("btnGreetMsg").innerHTML = "Enable"
+		$('.ui.dropdown.GreetingChannel').addClass("disabled")
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = false
+	} else {
+		$('#GreetMsg').prop("disabled", false);
+		document.getElementById("btnGreetMsg").innerHTML = "Disable"
+		$('.ui.dropdown.GreetingChannel').removeClass("disabled")
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = true
+	}
+});
+
 $(document).on("click", "#greetModalSettings", function () {
 	$('.ui.modal.greeting').modal({
 		autofocus: false,
@@ -478,3 +481,4 @@ $(document).on("click", "#greetModalSettings", function () {
 	$('.ui.dropdown.GreetingChannel').dropdown();
 	$('.ui.dropdown.test').dropdown({ allowAdditions: true })
 });
+
