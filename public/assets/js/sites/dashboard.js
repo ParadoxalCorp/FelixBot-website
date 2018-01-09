@@ -41,9 +41,8 @@ Awww, something bad occurred :v
 
 // functions
 
-const roleOptions = (product, defaultText) => (
-	`<option class="default text" value="">${defaultText}</option>
-	${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
+const roleOptions = selectedServer => (
+	`${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
 	<option class="item" data-value=${product.id}>${product.name}</option>` : "").join("")}`
 );
 const channelOptions = selectedServer => (
@@ -454,9 +453,16 @@ $.get("/api/mutualGuilds", function (json) {
             </div>
 					</div>
 					<label>Assigned role(s) when user joins:</label>
-          <select class="ui fluid search dropdown roleoptions" multiple="">
-            ${roleOptions(product, "select a role")}
-          </select>
+					<div class="ui fluid search multiple selection dropdown roleoptions" multiple="">
+						<input type="hidden" name="roles">
+						<i class="dropdown icon"></i>
+						<input class="search" autocomplete="off">
+						<span class="sizer"></span>
+						<div class="default text">select a role</div>
+						<div class="menu">
+						${roleOptions(selectedServer)}
+						</div>
+          </div>
         </div>
       </div>
     </div>
@@ -479,7 +485,7 @@ $.get("/api/mutualGuilds", function (json) {
 <div class="ui modal starboard">
 <i class="close icon"></i>
 <div class="header">
-	${selectedServer.name}'s greeting message settings
+	${selectedServer.name}'s starboard settings
 </div>
 <div class="image content">
 	<div class="ui small circular image">
@@ -488,9 +494,9 @@ $.get("/api/mutualGuilds", function (json) {
 	<div class="content">
 		<div class="ui form">
 				<div class="fields">
-					<div class="twelve wide field">
-						<label>Set greeting message</label>
-						<input type="text" name="setGreeting" id="minNumOfStars" placeholder="mininum number of stars">
+					<div class="twelve wide field">		
+						<label>Minimum number of star per message</label>
+						<input type="text" id="txtNum" value=${selectedServer.database.starboard.minimum} >
 					</div>
 				</div>
 				<label>Targeted channel:</label>
@@ -512,7 +518,7 @@ $.get("/api/mutualGuilds", function (json) {
 		Discard changes
 		<i class="trash outline icon"></i>
 	</div>
-	<div class="ui positive right labeled icon button" id="savePrivacySettingsButton">
+	<div class="ui positive right labeled icon button" id="saveStarboardSettingsBtn">
 		Save changes
 		<i class="checkmark icon"></i>
 	</div>
@@ -582,7 +588,10 @@ $(document).on("click", "#greetModalSettings", function () {
 
 	selectedServer.database.onEvent.guildMemberAdd.greetings.enabled === false ? $('.ui.dropdown.GreetingChannel').addClass("disabled") : null;
 	$('.ui.dropdown.GreetingChannel').dropdown();
-	$('.ui.dropdown.roleoptions').dropdown({ allowAdditions: true })
+	$('.ui.dropdown.roleoptions').dropdown({
+		useLabels: true,
+		maxSelections: 4,
+	})
 });
 
 // starboard settings
@@ -609,3 +618,17 @@ $(document).on("click", "#starboardModalSettings", function () {
 	selectedServer.database.onEvent.guildMemberAdd.greetings.enabled === false ? $('.ui.dropdown.starboard').addClass("disabled") : null;
 	$('.ui.dropdown.StarboardChannel').dropdown();
 });
+
+$(document).on("keypress", "#txtNum", function (e) {
+	var charCode = e.which || e.keyCode;
+	if (charCode < 48 || charCode > 57) {
+		return false;
+	}
+	return true;
+});
+
+// save greeting settings
+
+$(document).on("click", "#saveStarboardSettingsBtn", function () {
+	selectedServer.database.onEvent.guildMemberAdd.greetings.message = $(".dropdown.fluid.server").dropdown("get value")
+})
