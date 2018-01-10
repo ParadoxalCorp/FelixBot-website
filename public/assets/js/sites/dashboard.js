@@ -1,13 +1,13 @@
 // update settingsFunc
 // eslint-disable-next-line no-unused-vars
 const postDataFunc = (url, data) => $.post({
-	url: url,
-	data: JSON.stringify(data),
-	dataType: "json",
-	contentType: "application/json",
-	sucess: null,
+    url: url,
+    data: JSON.stringify(data),
+    dataType: "json",
+    contentType: "application/json",
+    sucess: null,
 }).done(() => {
-	$("#userSettingsContainer").append(`
+    $("#userSettingsContainer").append(`
 	<div class="ui positive message">
 		<i class="close icon"></i>
 		<div class="header">
@@ -16,14 +16,14 @@ const postDataFunc = (url, data) => $.post({
 		<p>Successfully updated your settings</p>
 	</div>
 `);
-	$(".message .close").on("click", function () {
-		$(this)
-			.closest(".message")
-			.transition("fade");
-	});
+    $(".message .close").on("click", function() {
+        $(this)
+            .closest(".message")
+            .transition("fade");
+    });
 }).fail(() => {
-	// console.error(error);
-	$("#userSettingsContainer").append(`
+    // console.error(error);
+    $("#userSettingsContainer").append(`
 			<div class="ui negative message">
 <i class="close icon"></i>
 <div class="header">
@@ -32,17 +32,17 @@ Awww, something bad occurred :v
 <p>Failed to update your settings
 </p></div>
 	`);
-	$(".message .close").on("click", function () {
-		$(this)
-			.closest(".message")
-			.transition("fade");
-	});
+    $(".message .close").on("click", function() {
+        $(this)
+            .closest(".message")
+            .transition("fade");
+    });
 })
 
 // functions
 
 const roleOptions = selectedServer => (
-	`${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
+        `${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
 	<option class="item" data-value=${product.id}>${product.name}</option>` : "").join("")}`
 );
 const channelOptions = selectedServer => (
@@ -454,9 +454,9 @@ $.get("/api/mutualGuilds", function (json) {
 					</div>
 					<label>Assigned role(s) when user joins:</label>
 					<div class="ui fluid search multiple selection dropdown roleoptions" multiple="">
-						<input type="hidden" name="roles">
+						<input type="hidden" name="roles" id="onJoinRolesInputList">
 						<i class="dropdown icon"></i>
-						<input class="search" autocomplete="off">
+						<input class="search" autocomplete="off" id="afterRolesChildElement">
 						<span class="sizer"></span>
 						<div class="default text">select a role</div>
 						<div class="menu">
@@ -591,7 +591,21 @@ $(document).on("click", "#greetModalSettings", function () {
 	$('.ui.dropdown.roleoptions').dropdown({
 		useLabels: true,
 		maxSelections: 4,
-	})
+	});
+	selectedServer.database.onEvent.guildMemberAdd.onJoinRole.filter(storedRole => selectedServer.roles.find(r => r.id === storedRole)
+&& (!document.getElementById('onJoinRolesInputList').hasAttribute('value') || !document.getElementById('onJoinRolesInputList').getAttribute('value').includes(storedRole))).forEach(r => {
+		let role = document.createElement("a");
+		role.classList = 'ui label transition visible';
+		role.setAttribute('data-value', r);
+		role.innerHTML = selectedServer.roles.find(role => role.id === r).name;
+		role.setAttribute('style', 'display: inline-block !important;');
+		let deleteIcon = document.createElement("i");
+		deleteIcon.classList = "delete icon";
+		role.appendChild(deleteIcon);
+		document.getElementById('onJoinRolesInputList').setAttribute('value', selectedServer.database.onEvent.guildMemberAdd.onJoinRole.filter(storedRole => selectedServer.roles.find(r => r.id === storedRole)).join(', '));
+        document.getElementsByClassName('roleoptions')[0].insertBefore(role, document.getElementById('afterRolesChildElement'));
+	});
+	document.getElementById('onJoinRolesInputList').setAttribute('value', selectedServer.database.onEvent.guildMemberAdd.onJoinRole.filter(storedRole => selectedServer.roles.find(r => r.id === storedRole)).join(','));
 });
 
 // starboard settings
