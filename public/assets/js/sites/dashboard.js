@@ -7,13 +7,13 @@ const postDataFunc = (url, data) => $.post({
     contentType: "application/json",
     sucess: null,
 }).done(() => {
-    $("#userSettingsContainer").append(`
-	<div class="ui positive message">
+    $(url.includes('user') ? "#userSettingsContainer" : "#guildSettingsContainer").append(`
+	<div class="ui floating positive message">
 		<i class="close icon"></i>
 		<div class="header">
 			Success
 		</div>
-		<p>Successfully updated your settings</p>
+		<p>Successfully updated the settings</p>
 	</div>
 `);
     $(".message .close").on("click", function() {
@@ -23,13 +23,13 @@ const postDataFunc = (url, data) => $.post({
     });
 }).fail(() => {
     // console.error(error);
-    $("#userSettingsContainer").append(`
-			<div class="ui negative message">
+    $(url.includes('user') ? "#userSettingsContainer" : "#guildSettingsContainer").append(`
+			<div class="ui floating negative message">
 <i class="close icon"></i>
 <div class="header">
 Awww, something bad occurred :v
 </div>
-<p>Failed to update your settings
+<p>Failed to update the settings
 </p></div>
 	`);
     $(".message .close").on("click", function() {
@@ -37,17 +37,17 @@ Awww, something bad occurred :v
             .closest(".message")
             .transition("fade");
     });
-})
+});
 
 // functions
 
-const roleOptions = selectedServer => (
+const roleOptions = (selectedServer) => (
         `${selectedServer.roles.map(product => product.name !== "@everyone" && product.managed === false ? `
 	<option class="item" data-value=${product.id}>${product.name}</option>` : "").join("")}`
 );
-const channelOptions = selectedServer => (
+const channelOptions = (selectedServer) => (
 	`${selectedServer.channels.map(product => product.type === 0 ? `
-		<div class="item" data-value="${product.id}">${product.name}</div>` : "").join("")}`
+		<div class="item" data-value="${product.id}">#${product.name}</div>` : "").join("")}`
 )
 
 const updateCheckboxes = function () {
@@ -114,83 +114,6 @@ const displayModal = function () {
 	updateCheckboxes();
 
 	$("#privacySettingsModal").modal("show");
-};
-
-const updatePrivacySettings = async function () {
-	document.getElementById("savePrivacySettingsButton").classList.add("loading");
-	$("#body").append(`
-		<div class="ui segment" id="savingNotice">
-			<div class="ui active dimmer">
-					<div class="ui indeterminate text loader">Saving...</div>
-			</div>
-		</div>
-	`);
-
-	document
-		.getElementById("savingNotice")
-		.appendChild(document.getElementById("pusher"));
-	document
-		.getElementById("savingNotice")
-		.appendChild(document.getElementById("footer"));
-	data.dataPrivacy = data.editedPrivacySettings;
-	// eslint-disable-next-line no-unused-vars
-	const postData = $.post({ // deepscan-disable-line UNUSED_DECL
-		url: "/api/userData",
-		data: JSON.stringify(data),
-		dataType: "json",
-		contentType: "application/json",
-		sucess: null,
-	})
-		.done(() => {
-			$("#userSettingsContainer").append(`
-			<div class="ui positive message">
-				<i class="close icon"></i>
-				<div class="header">
-					Success
-				</div>
-				<p>Successfully updated your settings</p>
-			</div>
-		`);
-
-			$(".message .close").on("click", function () {
-				$(this)
-					.closest(".message")
-					.transition("fade");
-			});
-		})
-		.fail(() => {
-			// console.error(error);
-			$("#userSettingsContainer").append(`
-					<div class="ui negative message">
-<i class="close icon"></i>
-<div class="header">
-Awww, something bad occurred :v
-</div>
-<p>Failed to update your settings
-</p></div>
-			`);
-			$(".message .close").on("click", function () {
-				$(this)
-					.closest(".message")
-					.transition("fade");
-			});
-		})
-		.always(() => {
-			document
-				.getElementById("savePrivacySettingsButton")
-				.classList.remove("loading");
-			let pusher = document.getElementById("pusher"),
-				footer = document.getElementById("footer");
-			document
-				.getElementById("savingNotice")
-				.removeChild(document.getElementById("pusher"));
-			document
-				.getElementById("savingNotice")
-				.removeChild(document.getElementById("footer"));
-			$("#savingNotice").remove();
-			document.getElementById("body").appendChild(pusher);
-			document.getElementById("body").appendChild(footer);
-		});
 };
 
 $(".ui.dropdown").dropdown();
@@ -412,9 +335,9 @@ $.get("/api/mutualGuilds", function (json) {
 				${selectedServer.database.onEvent.guildMemberRemove.farewell.enabled ? "Disable" : "Enable"}
 			</div>
 			<div class="ui negative button" id="updateCheckboxes">
-				Discard changes <i class="trash outline icon"></i>
+				Cancel <i class="remove outline icon"></i>
 			</div>
-			<div class="ui positive right labeled icon button" id="savePrivacySettingsButton">
+			<div class="ui positive right labeled icon button" id="saveFarewellSettingsButton">
 				Save changes
 				<i class="checkmark icon"></i>
 			</div>
@@ -441,15 +364,17 @@ $.get("/api/mutualGuilds", function (json) {
           <div class="fields">
             <div class="twelve wide field">
               <label>Set greeting message</label>
-              <input type="text" name="setGreeting" id="GreetMsg" placeholder="greeting message here" ${selectedServer.database.onEvent.guildMemberAdd.greetings.enabled ? "" : "disabled"}>
+			  <textarea id="GreetMsg" placeholder="greeting message here" ${selectedServer.database.onEvent.guildMemberAdd.greetings.enabled ? "" : "disabled"}></textarea>
+			  <div class="sub header disabled"><i class="info circle icon"></i> Any instance of %GUILD%, %USER%, %USERNAME% and %USERTAG% will respectively be replaced by the guild name, the mention of the user, the username of the user and the username + discriminator of the user</div>
             </div>
           </div>
           <label>Targeted channel:</label>
           <div class="ui fluid search selection dropdown GreetingChannel">
             <i class="dropdown icon"></i>
             <div class="default text">Select channel</div>
-            <div class="menu">
+            <div class="menu" id="greetingsTargetsList">
 						${channelOptions(selectedServer)}
+						<div class="item" data-value="dm">Direct message</div>
             </div>
 					</div>
 					<label>Assigned role(s) when user joins:</label>
@@ -471,11 +396,11 @@ $.get("/api/mutualGuilds", function (json) {
     <div class="ui blue button" id="btnGreetMsg">
       ${selectedServer.database.onEvent.guildMemberAdd.greetings.enabled ? "Disable" : "Enable"}
     </div>
-    <div class="ui negative button" id="updateCheckboxes">
-      Discard changes
-      <i class="trash outline icon"></i>
+    <div class="ui negative button">
+      Cancel
+      <i class="remove outline icon"></i>
     </div>
-    <div class="ui positive right labeled icon button" id="savePrivacySettingsButton">
+    <div class="ui positive right labeled icon button" id="saveGreetingsSettingsButton">
       Save changes
       <i class="checkmark icon"></i>
     </div>
@@ -514,11 +439,11 @@ $.get("/api/mutualGuilds", function (json) {
 	<div class="ui blue button" id="resetStarboardBtn">
 		Reset starboard
 	</div>
-	<div class="ui negative button" id="updateCheckboxes">
-		Discard changes
-		<i class="trash outline icon"></i>
+	<div class="ui negative button" >
+		Cancel
+		<i class="remove outline icon"></i>
 	</div>
-	<div class="ui positive right labeled icon button" id="saveStarboardSettingsBtn">
+	<div class="ui positive right labeled icon button" id="saveStarboardSettingsButton">
 		Save changes
 		<i class="checkmark icon"></i>
 	</div>
@@ -537,7 +462,8 @@ $(document).on("click", "#updateCheckboxes", function () {
 	updateCheckboxes();
 });
 $(document).on("click", "#savePrivacySettingsButton", function () {
-	updatePrivacySettings();
+	data.dataPrivacy = data.editedPrivacySettings;
+	postDataFunc(`/api/userData`, data);
 });
 
 // farewell settings
@@ -545,13 +471,13 @@ $(document).on("click", "#savePrivacySettingsButton", function () {
 $(document).on("click", "#btnFarewellMsg", function () {
 	if ((document.getElementById("btnFarewellMsg").innerHTML) === "Disable") {
 		$('#FarewellMsg').prop("disabled", true);
-		document.getElementById("btnFarewellMsg").innerHTML = "Enable"
-		$('.ui.dropdown.FarewellChannel').addClass("disabled")
+		document.getElementById("btnFarewellMsg").innerHTML = "Enable";
+		$('.ui.dropdown.FarewellChannel').addClass("disabled");
 		selectedServer.database.onEvent.guildMemberRemove.farewell.enabled = false;
 	} else {
 		$('#FarewellMsg').prop("disabled", false);
 		document.getElementById("btnFarewellMsg").innerHTML = "Disable";
-		$('.ui.dropdown.FarewellChannel').removeClass("disabled")
+		$('.ui.dropdown.FarewellChannel').removeClass("disabled");
 		selectedServer.database.onEvent.guildMemberRemove.farewell.enabled = true;
 	}
 });
@@ -570,14 +496,14 @@ $(document).on("click", "#farewellModalSettings", function () {
 $(document).on("click", "#btnGreetMsg", function () {
 	if ((document.getElementById("btnGreetMsg").innerHTML) === "Disable") {
 		$('#GreetMsg').prop("disabled", true);
-		document.getElementById("btnGreetMsg").innerHTML = "Enable"
-		$('.ui.dropdown.GreetingChannel').addClass("disabled")
-		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = false
+		document.getElementById("btnGreetMsg").innerHTML = "Enable";
+		$('.ui.dropdown.GreetingChannel').addClass("disabled");
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = false;
 	} else {
 		$('#GreetMsg').prop("disabled", false);
-		document.getElementById("btnGreetMsg").innerHTML = "Disable"
-		$('.ui.dropdown.GreetingChannel').removeClass("disabled")
-		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = true
+		document.getElementById("btnGreetMsg").innerHTML = "Disable";
+		$('.ui.dropdown.GreetingChannel').removeClass("disabled");
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = true;
 	}
 });
 
@@ -592,20 +518,48 @@ $(document).on("click", "#greetModalSettings", function () {
 		useLabels: true,
 		maxSelections: 4,
 	});
-	selectedServer.database.onEvent.guildMemberAdd.onJoinRole.filter(storedRole => selectedServer.roles.find(r => r.id === storedRole)
-&& (!document.getElementById('onJoinRolesInputList').hasAttribute('value') || !document.getElementById('onJoinRolesInputList').getAttribute('value').includes(storedRole))).forEach(r => {
-		let role = document.createElement("a");
+	//Insert the already-set onjoinroles if its the case
+	selectedServer.database.onEvent.guildMemberAdd.onJoinRole.filter((storedRole) => selectedServer.roles.find((r) => r.id === storedRole)
+&& (!document.getElementById('onJoinRolesInputList').hasAttribute('value') || !document.getElementById('onJoinRolesInputList').getAttribute('value').includes(storedRole))).forEach((r) => {
+		const role = document.createElement("a");
 		role.classList = 'ui label transition visible';
 		role.setAttribute('data-value', r);
-		role.innerHTML = selectedServer.roles.find(role => role.id === r).name;
+		role.innerHTML = selectedServer.roles.find((role) => role.id === r).name;
 		role.setAttribute('style', 'display: inline-block !important;');
-		let deleteIcon = document.createElement("i");
+		const deleteIcon = document.createElement("i");
 		deleteIcon.classList = "delete icon";
 		role.appendChild(deleteIcon);
-		document.getElementById('onJoinRolesInputList').setAttribute('value', selectedServer.database.onEvent.guildMemberAdd.onJoinRole.filter(storedRole => selectedServer.roles.find(r => r.id === storedRole)).join(', '));
+		document.getElementById('onJoinRolesInputList').setAttribute('value', selectedServer.database.onEvent.guildMemberAdd.onJoinRole.filter((storedRole) => selectedServer.roles.find(r => r.id === storedRole)).join(', '));
         document.getElementsByClassName('roleoptions')[0].insertBefore(role, document.getElementById('afterRolesChildElement'));
 	});
-	document.getElementById('onJoinRolesInputList').setAttribute('value', selectedServer.database.onEvent.guildMemberAdd.onJoinRole.filter(storedRole => selectedServer.roles.find(r => r.id === storedRole)).join(','));
+	document.getElementById('onJoinRolesInputList').setAttribute('value', selectedServer.database.onEvent.guildMemberAdd.onJoinRole.filter((storedRole) => selectedServer.roles.find(r => r.id === storedRole)).join(','));
+	//Insert the already-set greetings message if its the case
+	document.getElementById('GreetMsg').innerHTML = selectedServer.database.onEvent.guildMemberAdd.greetings.message;
+	//Insert the already-set target if its the case
+	if (selectedServer.database.onEvent.guildMemberAdd.greetings.target) {
+		const dbTarget = selectedServer.database.onEvent.guildMemberAdd.greetings.target;
+		const target = document.createElement('div');
+		target.setAttribute('class', 'text');
+		target.innerHTML = dbTarget === "dm" ? 'Direct Message' : (selectedServer.channels.find((c) => c.id === dbTarget) ? `#${selectedServer.channels.find((c) => c.id === dbTarget).name}` : '#deleted-channel');
+		document.getElementsByClassName('GreetingChannel')[0].removeChild(document.getElementsByClassName('GreetingChannel')[0].getElementsByClassName('default')[0]);
+		document.getElementsByClassName('GreetingChannel')[0].insertBefore(target, document.getElementById('greetingsTargetsList'));
+		const greetingsTargetList = document.getElementById('greetingsTargetsList');
+		for (let i = 0; i < greetingsTargetList.children.length; i++) {
+			if (greetingsTargetList.children[i].getAttribute('data-value') === dbTarget) {
+				return greetingsTargetList.children[i].classList = "item active selected";
+			}
+		}
+	}
+});
+
+$(document).on("click", "#saveGreetingsSettingsButton", function () {	
+	selectedServer.database.onEvent.guildMemberAdd.onJoinRole = document.getElementById('onJoinRolesInputList').hasAttribute('value') ? 
+	document.getElementById('onJoinRolesInputList').getAttribute('value').split(',') : [];
+	selectedServer.database.onEvent.guildMemberAdd.greetings.target = document.getElementById('greetingsTargetsList').getElementsByClassName('selected')[0] ?
+	document.getElementById('greetingsTargetsList').getElementsByClassName('selected')[0].getAttribute('data-value') : false;
+	selectedServer.database.onEvent.guildMemberAdd.greetings.disabled = document.getElementsByClassName('GreetingChannel')[0].classList.contains('disabled') ? true : false;
+	selectedServer.database.onEvent.guildMemberAdd.greetings.message = document.getElementById('GreetMsg').value;
+	postDataFunc(`/api/guildData`, selectedServer.database);
 });
 
 // starboard settings
@@ -613,13 +567,13 @@ $(document).on("click", "#greetModalSettings", function () {
 $(document).on("click", "#starboardSettings", function () {
 	if ((document.getElementById("starboardSettings").innerHTML) === "Disable") {
 		$('#GreetMsg').prop("disabled", true);
-		document.getElementById("starboardSettings").innerHTML = "Enable"
-		$('.ui.dropdown.GreetingChannel').addClass("disabled")
-		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = false
+		document.getElementById("starboardSettings").innerHTML = "Enable";
+		$('.ui.dropdown.GreetingChannel').addClass("disabled");
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = false;
 	} else {
 		$('#GreetMsg').prop("disabled", false);
-		document.getElementById("starboardSettings").innerHTML = "Disable"
-		$('.ui.dropdown.GreetingChannel').removeClass("disabled")
+		document.getElementById("starboardSettings").innerHTML = "Disable";
+		$('.ui.dropdown.GreetingChannel').removeClass("disabled");
 		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = true;
 	}
 });
