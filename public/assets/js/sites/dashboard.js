@@ -315,14 +315,17 @@ $.get("/api/mutualGuilds", function (json) {
 						<div class="fields">
 							<div class="twelve wide field">
 								<label>Set farewell message</label>
-								<input type="text" name="setFarewell" id="FarewellMsg" placeholder="farewell message here" ${selectedServer.database.onEvent.guildMemberRemove.farewell.enabled	? "" : "disabled"}>
+								<textarea type="text" name="setFarewell" id="FarewellMsg" placeholder="farewell message here" ${selectedServer.database.onEvent.guildMemberRemove.farewell.enabled	? "" : "disabled"}></textarea>
+								<div class="sub header disabled"><i class="info circle icon"></i> Any instance of %GUILD%, %USERNAME% and %USERTAG% will respectively be replaced by the guild name, the username of the user and the username + discriminator of the user</div>
 							</div>
 						</div>
 						<label>Targeted channel:</label>
 						<div class="ui fluid search selection dropdown FarewellChannel">
 						<i class="dropdown icon"></i>
-							<div class="default text">Select channel</div>
-							<div class="menu">
+						${selectedServer.database.onEvent.guildMemberRemove.farewell.channel ? '<div class="text">' + (selectedServer.channels.find((c) => c.id === selectedServer.database.onEvent.guildMemberRemove.farewell.channel) 
+						? '#' + selectedServer.channels.find((c) => c.id === selectedServer.database.onEvent.guildMemberRemove.farewell.channel).name : '#deleted-channel') + '</div>'
+						: '<div class="default text">Select channel</div>'}
+							<div class="menu" id = "farewellTargetsList">
 							${channelOptions(selectedServer)}
 							</div>
 						</div>
@@ -371,10 +374,13 @@ $.get("/api/mutualGuilds", function (json) {
           <label>Targeted channel:</label>
           <div class="ui fluid search selection dropdown GreetingChannel">
             <i class="dropdown icon"></i>
-            <div class="default text">Select channel</div>
+			${selectedServer.database.onEvent.guildMemberAdd.greetings.target ? '<div class="text">' + (selectedServer.database.onEvent.guildMemberAdd.greetings.target === "dm" 
+			? 'Direct Message' : '<div class="text">' + (selectedServer.channels.find((c) => c.id === selectedServer.database.onEvent.guildMemberAdd.greetings.target) 
+			? '#' + selectedServer.channels.find((c) => c.id === selectedServer.database.onEvent.guildMemberAdd.greetings.target).name : '#deleted-channel')) + '</div>'
+			: '<div class="default text">Select channel</div>'}
             <div class="menu" id="greetingsTargetsList">
 						${channelOptions(selectedServer)}
-						<div class="item" data-value="dm">Direct message</div>
+						<div class="item" data-value="dm">Direct Message</div>
             </div>
 					</div>
 					<label>Assigned role(s) when user joins:</label>
@@ -489,6 +495,32 @@ $(document).on("click", "#farewellModalSettings", function () {
 
 	$('.ui.dropdown.FarewellChannel').dropdown();
 	selectedServer.database.onEvent.guildMemberRemove.farewell.enabled === false ? $('.ui.dropdown.FarewellChannel').addClass("disabled") : null;
+	//Insert the already-set greetings message if its the case
+	document.getElementById('FarewellMsg').innerHTML = selectedServer.database.onEvent.guildMemberRemove.farewell.message;
+	//Insert the already-set target if its the case
+	if (selectedServer.database.onEvent.guildMemberRemove.farewell.channel) {
+		/*const dbTarget = selectedServer.database.onEvent.guildMemberRemove.farewell.message;
+		const target = document.createElement('div');
+		target.setAttribute('class', 'text');
+		target.innerHTML = selectedServer.channels.find((c) => c.id === dbTarget) ? `#${selectedServer.channels.find((c) => c.id === dbTarget).name}` : '#deleted-channel';
+		if (document.getElementsByClassName('FarewellChannel')[0].getElementsByClassName('default')[0]) {
+			document.getElementsByClassName('FarewellChannel')[0].removeChild(document.getElementsByClassName('FarewellChannel')[0].getElementsByClassName('default')[0]);
+			document.getElementsByClassName('FarewellChannel')[0].insertBefore(target, document.getElementById('farewellTargetsList'));*/
+			const farewellTargetsList = document.getElementById('farewellTargetsList');
+			for (let i = 0; i < farewellTargetsList.children.length; i++) {
+				if (farewellTargetsList.children[i].innerHTML === document.getElementsByClassName('FarewellChannel')[0].getElementsByClassName('text')[0].innerHTML) {
+					return farewellTargetsList.children[i].classList = "item active selected";
+			}
+		}
+	}
+});
+
+$(document).on("click", "#saveFarewellSettingsButton", function () {	
+	selectedServer.database.onEvent.guildMemberRemove.farewell.channel = document.getElementById('farewellTargetsList').getElementsByClassName('selected')[0] ?
+	document.getElementById('farewellTargetsList').getElementsByClassName('selected')[0].getAttribute('data-value') : false;
+	selectedServer.database.onEvent.guildMemberRemove.farewell.disabled = document.getElementsByClassName('FarewellChannel')[0].classList.contains('disabled') ? true : false;
+	selectedServer.database.onEvent.guildMemberRemove.farewell.message = document.getElementById('FarewellMsg').value;
+	postDataFunc(`/api/guildData`, selectedServer.database);
 });
 
 // greetings settings
@@ -537,19 +569,20 @@ $(document).on("click", "#greetModalSettings", function () {
 	document.getElementById('GreetMsg').innerHTML = selectedServer.database.onEvent.guildMemberAdd.greetings.message;
 	//Insert the already-set target if its the case
 	if (selectedServer.database.onEvent.guildMemberAdd.greetings.target) {
-		const dbTarget = selectedServer.database.onEvent.guildMemberAdd.greetings.target;
+		/*const dbTarget = selectedServer.database.onEvent.guildMemberAdd.greetings.target;
 		const target = document.createElement('div');
 		target.setAttribute('class', 'text');
 		target.innerHTML = dbTarget === "dm" ? 'Direct Message' : (selectedServer.channels.find((c) => c.id === dbTarget) ? `#${selectedServer.channels.find((c) => c.id === dbTarget).name}` : '#deleted-channel');
-		document.getElementsByClassName('GreetingChannel')[0].removeChild(document.getElementsByClassName('GreetingChannel')[0].getElementsByClassName('default')[0]);
-		document.getElementsByClassName('GreetingChannel')[0].insertBefore(target, document.getElementById('greetingsTargetsList'));
-		const greetingsTargetList = document.getElementById('greetingsTargetsList');
-		for (let i = 0; i < greetingsTargetList.children.length; i++) {
-			if (greetingsTargetList.children[i].getAttribute('data-value') === dbTarget) {
-				return greetingsTargetList.children[i].classList = "item active selected";
+		if (document.getElementsByClassName('GreetingChannel')[0].getElementsByClassName('default')[0]) {
+			document.getElementsByClassName('GreetingChannel')[0].removeChild(document.getElementsByClassName('GreetingChannel')[0].getElementsByClassName('default')[0]);
+			document.getElementsByClassName('GreetingChannel')[0].insertBefore(target, document.getElementById('greetingsTargetsList'));*/
+			const greetingsTargetList = document.getElementById('greetingsTargetsList');
+			for (let i = 0; i < greetingsTargetList.children.length; i++) {
+				if (greetingsTargetList.children[i].innerHTML === document.getElementsByClassName('GreetingChannel')[0].getElementsByClassName('text')[0].innerHTML) {
+					return greetingsTargetList.children[i].classList = "item active selected";
+				}
 			}
 		}
-	}
 });
 
 $(document).on("click", "#saveGreetingsSettingsButton", function () {	
@@ -599,4 +632,4 @@ $(document).on("keypress", "#txtNum", function (e) {
 
 $(document).on("click", "#saveStarboardSettingsBtn", function () {
 	selectedServer.database.onEvent.guildMemberAdd.greetings.message = $(".dropdown.fluid.server").dropdown("get value")
-})
+});
