@@ -337,8 +337,8 @@ $.get("/api/mutualGuilds", function (json) {
 			<div class="ui blue button" id="btnFarewellMsg">
 				${selectedServer.database.onEvent.guildMemberRemove.farewell.enabled ? "Disable" : "Enable"}
 			</div>
-			<div class="ui negative button" id="updateCheckboxes">
-				Cancel <i class="remove outline icon"></i>
+			<div class="ui negative right labeled icon button" id="updateCheckboxes">
+				Cancel <i class="remove icon"></i>
 			</div>
 			<div class="ui positive right labeled icon button" id="saveFarewellSettingsButton">
 				Save changes
@@ -402,9 +402,9 @@ $.get("/api/mutualGuilds", function (json) {
     <div class="ui blue button" id="btnGreetMsg">
       ${selectedServer.database.onEvent.guildMemberAdd.greetings.enabled ? "Disable" : "Enable"}
     </div>
-    <div class="ui negative button">
+    <div class="ui negative right labeled icon button">
       Cancel
-      <i class="remove outline icon"></i>
+      <i class="remove icon"></i>
     </div>
     <div class="ui positive right labeled icon button" id="saveGreetingsSettingsButton">
       Save changes
@@ -433,8 +433,9 @@ $.get("/api/mutualGuilds", function (json) {
 				<label>Targeted channel:</label>
 				<div class="ui fluid search selection dropdown StarboardChannel">
 					<i class="dropdown icon"></i>
-					<div class="default text">Select starboard channel</div>
-					<div class="menu">
+					${selectedServer.database.starboard.channel ? '<div class="text">' + (selectedServer.channels.find((c) => c.id === selectedServer.database.starboard.channel) 
+					? '#' + selectedServer.channels.find((c) => c.id === selectedServer.database.starboard.channel).name : '#deleted-channel') + '</div>'
+					: '<div class="default text">Select channel</div>'}					<div class="menu" id="starboardTargetsList">
 						${channelOptions(selectedServer)}
 					</div>
 				</div>
@@ -445,9 +446,9 @@ $.get("/api/mutualGuilds", function (json) {
 	<div class="ui blue button" id="resetStarboardBtn">
 		Reset starboard
 	</div>
-	<div class="ui negative button" >
+	<div class="ui negative right labeled icon button" >
 		Cancel
-		<i class="remove outline icon"></i>
+		<i class="remove icon"></i>
 	</div>
 	<div class="ui positive right labeled icon button" id="saveStarboardSettingsButton">
 		Save changes
@@ -628,8 +629,11 @@ $(document).on("keypress", "#txtNum", function (e) {
 	return true;
 });
 
-// save greeting settings
+// save starboard settings
 
-$(document).on("click", "#saveStarboardSettingsBtn", function () {
-	selectedServer.database.onEvent.guildMemberAdd.greetings.message = $(".dropdown.fluid.server").dropdown("get value")
+$(document).on("click", "#saveStarboardSettingsButton", function () {
+	selectedServer.database.starboard.channel = document.getElementById('starboardTargetsList').getElementsByClassName('selected')[0] ?
+	document.getElementById('starboardTargetsList').getElementsByClassName('selected')[0].getAttribute('data-value') : false;
+	selectedServer.database.starboard.minimum = parseInt(document.getElementById('txtNum').value);
+	postDataFunc(`/api/guildData`, selectedServer.database);
 });
