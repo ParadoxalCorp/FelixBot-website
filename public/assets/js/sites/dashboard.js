@@ -270,35 +270,56 @@ $.get("/api/mutualGuilds", function (json) {
 
 				$("#serverSettings").append(`
 			<div class="ui form">
-			<div class="fields">
-				<div class="six wide field">
-					<label>Set prefix</label>
-					<input type="text" name="prefix" id="prefix">
+			  <div class="field"  id="setPrefixField">
+				 <label>Set prefix</label>
+				 <div class="ui action input">
+					<input type="text" name="prefix" id="prefix" value="${selectedServer.database.generalSettings.prefix}">
+					<button class="ui button" id="savePrefixButton">Update</button>
 				</div>
-			</div>
-			<div class="ui form">
-				<div class="fields">
-					<div class="six wide field">
-						<label>Set greeting message</label>
-						<div class="ui blue button" id="greetModalSettings">Open settings</div>
-					</div>
-				</div>
-				<div class="fields">
-					<div class="six wide field">
-						<label>Set farewell settings</label>
-						<div class="ui blue button" id="farewellModalSettings">Open settings</div>
-					</div>
-				</div>
-				<div class="fields">
-					<div class="six wide field">
-						<label>Set starboard settings</label>
-						<div class="ui blue button" id="starboardModalSettings">Open settings</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-
+              </div>
+			<div class="ui cards">
+  <div class="card">
+    <div class="content">
+	  <div class="header">
+	     <i class="add user icon"></i>New member settings
+	  </div>
+      <div class="description">
+        Manage the settings such as the greetings and the roles given to new members
+      </div>
+    </div>
+    <div class="ui bottom attached button" id="greetModalSettings">
+      <i class="setting icon"></i>
+      Open settings
+    </div>
+  </div>
+  <div class="card">
+    <div class="content">
+	<div class="header">
+	<i class="remove user icon"></i>Farewell settings
+    </div>
+      <div class="description">
+        Set the farewell message sent when a member leave
+      </div>
+    </div>
+    <div class="ui bottom attached button" id="farewellModalSettings">
+      <i class="setting icon"></i>
+      Open settings
+    </div>
+  </div>
+  <div class="card">
+    <div class="content">
+	<div class="header">
+	   <i class="star icon"></i>Starboard settings
+    </div>      <div class="description">
+        Manage the starboard settings such as the channel or the minimum amount of stars required
+      </div>
+    </div>
+    <div class="ui bottom attached button" id="starboardModalSettings">
+      <i class="setting icon"></i>
+      Open settings
+    </div>
+  </div>
+</div>
 
 		<div class="ui modal farewell">
 		<i class="close icon"></i>
@@ -635,5 +656,24 @@ $(document).on("click", "#saveStarboardSettingsButton", function () {
 	selectedServer.database.starboard.channel = document.getElementById('starboardTargetsList').getElementsByClassName('selected')[0] ?
 	document.getElementById('starboardTargetsList').getElementsByClassName('selected')[0].getAttribute('data-value') : false;
 	selectedServer.database.starboard.minimum = parseInt(document.getElementById('txtNum').value);
+	postDataFunc(`/api/guildData`, selectedServer.database);
+});
+
+// save prefix
+$(document).on("click", "#savePrefixButton", function () {
+	const newPrefix = document.getElementById('prefix');
+	const prefixField = document.getElementById('setPrefixField');
+	const messages = prefixField.querySelectorAll('.pointing');
+	//Delete the "invalid input" messages if there is
+	for (let i = 0; i < messages.length; i++) {
+		prefixField.removeChild(messages[i]);
+	}
+	if (!newPrefix.value || newPrefix.value.length > 8 || new RegExp(/\s+/gim).test(newPrefix.value)) {
+	   const invalidPrefix = document.createElement('div');
+	   invalidPrefix.classList = "ui pointing red basic label";
+	   invalidPrefix.innerHTML = "The prefix can't be nothing, exceed 8 characters nor can it contains spaces";
+       return document.getElementById('setPrefixField').appendChild(invalidPrefix);
+	}
+	selectedServer.database.generalSettings.prefix = newPrefix.value;
 	postDataFunc(`/api/guildData`, selectedServer.database);
 });
