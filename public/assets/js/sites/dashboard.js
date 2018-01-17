@@ -292,6 +292,7 @@ $.get("/api/mutualGuilds", function (json) {
       Open settings
     </div>
   </div>
+
   <div class="card">
     <div class="content">
 	<div class="header">
@@ -306,6 +307,7 @@ $.get("/api/mutualGuilds", function (json) {
       Open settings
     </div>
   </div>
+
   <div class="card">
     <div class="content">
 	<div class="header">
@@ -315,6 +317,20 @@ $.get("/api/mutualGuilds", function (json) {
       </div>
     </div>
     <div class="ui bottom attached button" id="starboardModalSettings">
+      <i class="setting icon"></i>
+      Open settings
+	</div>
+	
+  </div>
+    <div class="card">
+    <div class="content">
+	<div class="header">
+	   <i class="legal icon"></i>Moderation settings
+    </div>      <div class="description">
+        Manage the mod-log channel and such
+      </div>
+    </div>
+    <div class="ui bottom attached button" id="moderationModalSettings">
       <i class="setting icon"></i>
       Open settings
     </div>
@@ -472,6 +488,40 @@ $.get("/api/mutualGuilds", function (json) {
 		<i class="remove icon"></i>
 	</div>
 	<div class="ui positive right labeled icon button" id="saveStarboardSettingsButton">
+		Save changes
+		<i class="checkmark icon"></i>
+	</div>
+</div>
+
+<div class="ui modal moderation">
+<i class="close icon"></i>
+<div class="header">
+	${selectedServer.name}'s moderation settings
+</div>
+<div class="image content">
+	<div class="ui small circular image">
+		<img src=${selectedServer.icon === null ? "https://semantic-ui.com/images/wireframe/square-image.png" : `https://cdn.discordapp.com/icons/${selectedServer.id}/${selectedServer.icon}.png`}>
+	</div>
+	<div class="content">
+		<div class="ui form">
+				<label>Mod-log channel:</label>
+				<div class="ui fluid search selection dropdown ModerationChannel">
+					<i class="dropdown icon"></i>
+					${selectedServer.database.modLog.channel ? '<div class="text">' + (selectedServer.channels.find((c) => c.id === selectedServer.database.modLog.channel) 
+					? '#' + selectedServer.channels.find((c) => c.id === selectedServer.database.modLog.channel).name : '#deleted-channel') + '</div>'
+					: '<div class="default text">Select channel</div>'}					<div class="menu" id="modLogTargetsList">
+						${channelOptions(selectedServer)}
+					</div>
+				</div>
+		</div>
+	</div>
+</div>
+<div class="actions">
+	<div class="ui negative right labeled icon button" >
+		Cancel
+		<i class="remove icon"></i>
+	</div>
+	<div class="ui positive right labeled icon button" id="saveModerationSettingsButton">
 		Save changes
 		<i class="checkmark icon"></i>
 	</div>
@@ -675,5 +725,19 @@ $(document).on("click", "#savePrefixButton", function () {
        return document.getElementById('setPrefixField').appendChild(invalidPrefix);
 	}
 	selectedServer.database.generalSettings.prefix = newPrefix.value;
+	postDataFunc(`/api/guildData`, selectedServer.database);
+});
+
+$(document).on("click", "#moderationModalSettings", function () {
+	$('.ui.modal.moderation').modal({
+		autofocus: false,
+	}).modal('show');
+
+	$('.ui.dropdown.ModerationChannel').dropdown();
+});
+
+$(document).on("click", "#saveModerationSettingsButton", function () {
+	selectedServer.database.modLog.channel = document.getElementById('modLogTargetsList').getElementsByClassName('selected')[0] ?
+	document.getElementById('modLogTargetsList').getElementsByClassName('selected')[0].getAttribute('data-value') : false;
 	postDataFunc(`/api/guildData`, selectedServer.database);
 });
