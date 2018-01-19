@@ -1,13 +1,19 @@
 // update settingsFunc
 // eslint-disable-next-line no-unused-vars
-const postDataFunc = (url, data) => $.post({
-    url: url,
-    data: JSON.stringify(data),
-    dataType: "json",
-    contentType: "application/json",
-    sucess: null,
-}).done(() => {
-    $(url.includes('user') ? "#userSettingsContainer" : "#guildSettingsContainer").append(`
+let isPosting = "not";
+
+const postDataFunc = async(url, data) => {
+    if (isPosting !== "not") await isPosting;
+    else isPosting = new Promise((resolve, reject) => resolve);
+    $.post({
+        url: url,
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json",
+        success: null,
+    }).done(() => {
+        isPosting = "not";
+        $(url.includes('user') ? "#userSettingsContainer" : "#guildSettingsContainer").append(`
 	<div class="ui floating positive message">
 		<i class="close icon"></i>
 		<div class="header">
@@ -16,14 +22,15 @@ const postDataFunc = (url, data) => $.post({
 		<p>Successfully updated the settings</p>
 	</div>
 `);
-    $(".message .close").on("click", function() {
-        $(this)
-            .closest(".message")
-            .transition("fade");
-    });
-}).fail(() => {
-    // console.error(error);
-    $(url.includes('user') ? "#userSettingsContainer" : "#guildSettingsContainer").append(`
+        $(".message .close").on("click", function() {
+            $(this)
+                .closest(".message")
+                .transition("fade");
+        });
+    }).fail(() => {
+        // console.error(error);
+        isPosting = "not";
+        $(url.includes('user') ? "#userSettingsContainer" : "#guildSettingsContainer").append(`
 			<div class="ui floating negative message">
 <i class="close icon"></i>
 <div class="header">
@@ -32,12 +39,13 @@ Awww, something bad occurred :v
 <p>Failed to update the settings
 </p></div>
 	`);
-    $(".message .close").on("click", function() {
-        $(this)
-            .closest(".message")
-            .transition("fade");
+        $(".message .close").on("click", function() {
+            $(this)
+                .closest(".message")
+                .transition("fade");
+        });
     });
-});
+};
 
 // functions
 
@@ -140,7 +148,7 @@ $.get("/api/mutualGuilds", function (json) {
 		}.png`;
 	}
 
-	// making sure theres a defualt server image if the server have not chosen one
+	// making sure theres a default server image if the server have not chosen one
 	_map.forEach((product) => {
 		if (product.icon === null) {
 			guild.icon.push(
@@ -265,7 +273,13 @@ $.get("/api/mutualGuilds", function (json) {
 		_map.forEach((product) => {
 			if (product.id === $(".dropdown.fluid.server").dropdown("get value")) {
 				selectedServer = product;
-
+                //Convert the roles colors to actual hex colors 
+				product.roles.forEach(r => {
+					if (!col) var col;
+					col = product.roles.find(guildRole => guildRole.id === r.id).color.toString(16);
+					while (col.length < 6) col = '0' + col;
+					product.roles.find(guildRole => guildRole.id === r.id).hexColor = `#${col}`;
+				});
 				$("#serverSettings").empty();
 
 				$("#serverSettings").append(`
@@ -335,6 +349,20 @@ $.get("/api/mutualGuilds", function (json) {
       Open settings
     </div>
   </div>
+
+  <div class="card">
+  <div class="content">
+  <div class="header">
+	 <i class="legal icon"></i>Experience & level system settings
+  </div>      <div class="description">
+	  Manage the settings of the experience system and the roles given at specific points
+	</div>
+	</div>
+  <div class="ui bottom attached button" id="levelSystemModalSettings">
+	<i class="setting icon"></i>
+	Open settings
+  </div>
+</div>
 </div>
 
 		<div class="ui modal farewell">
@@ -392,7 +420,7 @@ $.get("/api/mutualGuilds", function (json) {
 	<div class="ui modal greeting">
   <i class="close icon"></i>
   <div class="header">
-    ${selectedServer.name}'s greeting message settings
+    ${selectedServer.name}'s new member settings
   </div>
   <div class="image content">
     <div class="ui small circular image">
@@ -525,6 +553,90 @@ $.get("/api/mutualGuilds", function (json) {
 		Save changes
 		<i class="checkmark icon"></i>
 	</div>
+</div>
+</div>
+
+<div class="ui modal levelSystem">
+<i class="close icon"></i>
+<div class="header">
+  ${selectedServer.name}'s experience system settings
+</div>
+<div class="image content">
+  <div class="ui small circular image">
+	<img src=${selectedServer.icon === null ? "https://semantic-ui.com/images/wireframe/square-image.png" : `https://cdn.discordapp.com/icons/${selectedServer.id}/${selectedServer.icon}.png`}>
+  </div>
+  <div class="content">
+   <div class="ui toggle checkbox">
+      <input type="checkbox" name="automatic_removal" id="automaticRemoval">
+      <label>Automatic removal: Whether the user previous role should be removed whenever they reach a higher role</label>
+   </div>
+  <br>
+  <br>
+	<div class="ui form">
+	  <div class="field">
+		<div class="fields">
+		  <div class="twelve wide field">
+			<label>Set custom level up message</label>
+			<textarea id="CustomLevelUpMsg" placeholder="Level up custom message here" ${selectedServer.database.levelSystem.enabled ? "" : "disabled"}></textarea>
+			<div class="sub header disabled"><i class="info circle icon"></i> Any instance of %USER%, %USERNAME%, %USERTAG% and %LEVEL% will respectively be replaced by the mention of the user, the username of the user, the username + discriminator of the user and the level they just reached</div>
+		  </div>
+		</div>
+		<label>Level up notifications target:</label>
+		<div class="ui fluid search selection dropdown LevelUpNotificationChannel">
+		  <i class="dropdown icon"></i>
+		  ${selectedServer.database.levelSystem.levelUpNotif ? '<div class="text">' + (selectedServer.database.levelSystem.levelUpNotif === "dm" 
+		  ? 'Direct Message' : '<div class="text">' + (selectedServer.channels.find((c) => c.id === selectedServer.database.levelSystem.levelUpNotif) 
+		  ? '#' + selectedServer.channels.find((c) => c.id === selectedServer.database.levelSystem.levelUpNotif).name : (selectedServer.database.levelSystem.levelUpNotif === "Channel" ? 'channel' : '#deleted-channel'))) + '</div>'
+		  : '<div class="default text">Select channel</div>'}
+		  <div class="menu" id="LevelUpTargetsList">
+					  ${channelOptions(selectedServer)}
+					  <div class="item" data-value="dm">Direct Message</div>
+					  <div class="item" data-value="channel">Channel</div>
+		  </div>
+		</div>
+		<br>
+	    <label>Assigned role(s) when users reach specific requirements:</label>
+		<div class="ui middle aligned divided list">
+		 ${selectedServer.database.levelSystem.roles.filter(r => selectedServer.roles.find(role => role.id === r.id)).map(r => `
+		 <div class="item" data-value="${r.id}">
+		  <div class="right floated content">
+		   <div class="ui negative labeled icon button">Remove <i class="remove icon"></i></div>
+		  </div>
+		  <img class="ui avatar image" src="/imgs/${r.method === "experience" ? 'star' : 'mail'}-icon.png" style="border-radius: 0 !important"></img>
+		  <div class="content">
+			 <a style="color: ${selectedServer.roles.find(role => role.id === r.id).hexColor}">${selectedServer.roles.find(role => role.id === r.id).name}</a> | At: ${r.method === "experience" ? 'Level ' + r.at : r.at + ' messages'}
+		  </div>
+		</div>`).join("")}
+		<div class="item">
+		<div class="right floated content">
+		 <div class="ui blue labeled icon button">Add <i class="plus icon"></i></div>
+		</div>
+		<div class="content">
+		   <div class="ui fluid search selection dropdown ActivityRoles">
+			  <i class="dropdown icon"></i>
+			  <div class="default text">Select role</div>
+			  <div class="menu" id="ActivityRolesTargetsList">
+				 ${roleOptions(selectedServer)}
+			  </div>
+		   </div>
+		</div>
+	  </div>
+	</div>
+	</div>
+  </div>
+ </div>
+</div>
+<div class="actions">
+<div class="ui blue button" id="btnExperienceSystem">
+  ${selectedServer.database.onEvent.guildMemberAdd.greetings.enabled ? "Disable" : "Enable"}
+</div>
+<div class="ui negative right labeled icon button">
+  Cancel
+  <i class="remove icon"></i>
+</div>
+<div class="ui positive right labeled icon button" id="saveExperienceSettingsButton">
+  Save changes
+  <i class="checkmark icon"></i>
 </div>
 </div>
 				`);
@@ -740,4 +852,27 @@ $(document).on("click", "#saveModerationSettingsButton", function () {
 	selectedServer.database.modLog.channel = document.getElementById('modLogTargetsList').getElementsByClassName('selected')[0] ?
 	document.getElementById('modLogTargetsList').getElementsByClassName('selected')[0].getAttribute('data-value') : false;
 	postDataFunc(`/api/guildData`, selectedServer.database);
+});
+
+$(document).on("click", "#levelSystemModalSettings", function () {
+	$('.ui.modal.levelSystem').modal({
+		autofocus: false,
+	}).modal('show');
+
+	$('.ui.dropdown.LevelUpNotificationChannel').dropdown();
+	$('.ui.dropdown.ActivityRoles').dropdown();
+});
+
+$(document).on("click", "#btnExperienceSystem", function () {
+	if ((document.getElementById("btnExperienceSystem").innerHTML) === "Disable") {
+		$('#CustomLevelUpMsg').prop("disabled", true);
+		document.getElementById("btnExperienceSystem").innerHTML = "Enable";
+		$('.ui.dropdown.GreetingChannel').addClass("disabled");
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = false;
+	} else {
+		$('#CustomLevelUpMsg').prop("disabled", false);
+		document.getElementById("btnExperienceSystem").innerHTML = "Disable";
+		$('.ui.dropdown.GreetingChannel').removeClass("disabled");
+		selectedServer.database.onEvent.guildMemberAdd.greetings.enabled = true;
+	}
 });
